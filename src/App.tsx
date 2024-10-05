@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { publicRoutes } from "./routes/routes";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
             />
           );
         })}
+        {/* Route này sẽ xử lý tất cả các đường dẫn không tồn tại */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
