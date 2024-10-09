@@ -1,4 +1,5 @@
 import MainLayout from "../layouts/main_layout";
+import PostItem from "../components/PostItem";
 import "../styles/Home.css"
 
 
@@ -325,6 +326,10 @@ const Home = () => {
                                     </div>
                                     {/* /.panel */}
                                 </div>
+
+
+
+                                <PostItem></PostItem>
                                 <div className="col-md-6">
                                     <div className="panel panel-success rounded shadow">
                                         <div className="panel-heading no-border">
