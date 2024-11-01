@@ -1,481 +1,459 @@
 import MainLayout from "../layouts/main_layout";
-import PostItem from "../components/PostItem";
+
+import advertisement from "../assets/advertisement.png"
+import arrow from "../assets/arrow.png"
+import comments from "../assets/comments.png"
+import logo from "../assets/logo.png"
+
+
 import "../styles/Home.css"
-
-
-
 
 const Home = () => {
 
     return (
         <>
             <MainLayout>
-                <div className="container bootstrap snippets bootdeys">
-                    <div className="row">
-                        <div className="col-lg-3 col-md-3 col-sm-4">
-                            <div className="panel rounded shadow">
-                                <div className="panel-body">
-                                    <div className="inner-all">
-                                        <ul className="list-unstyled">
-                                            <li className="text-center">
-                                                <img
-                                                    data-no-retina=""
-                                                    className="img-circle img-responsive img-bordered-primary"
-                                                    src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                                                    alt="John Doe"
-                                                />
-                                            </li>
-                                            <li className="text-center">
-                                                <h4 className="text-capitalize">John Doe</h4>
-                                                <p className="text-muted text-capitalize">web designer</p>
-                                            </li>
-                                            <li>
-                                                <a href="" className="btn btn-success text-center btn-block">
-                                                    PRO Account
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <br />
-                                            </li>
-                                            <li>
-                                                <div className="btn-group-vertical btn-block">
-                                                    <a href="" className="btn btn-default">
-                                                        <i className="fa fa-cog pull-right" />
-                                                        Edit Account
-                                                    </a>
-                                                    <a href="" className="btn btn-default">
-                                                        <i className="fa fa-sign-out pull-right" />
-                                                        Logout
-                                                    </a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* /.panel */}
-                            <div className="panel panel-theme rounded shadow">
-                                <div className="panel-heading">
-                                    <div className="pull-left">
-                                        <h3 className="panel-title">Contact</h3>
-                                    </div>
-                                    <div className="pull-right">
-                                        <a href="#" className="btn btn-sm btn-success">
-                                            <i className="fa fa-facebook" />
-                                        </a>
-                                        <a href="#" className="btn btn-sm btn-success">
-                                            <i className="fa fa-twitter" />
-                                        </a>
-                                        <a href="#" className="btn btn-sm btn-success">
-                                            <i className="fa fa-google-plus" />
-                                        </a>
-                                    </div>
-                                    <div className="clearfix" />
-                                </div>
-                                {/* /.panel-heading */}
-                                <div className="panel-body no-padding rounded">
-                                    <ul className="list-group no-margin">
-                                        <li className="list-group-item">
-                                            <i className="fa fa-envelope mr-5" /> support@bootdey.com
-                                        </li>
-                                        <li className="list-group-item">
-                                            <i className="fa fa-globe mr-5" /> www.bootdey.com
-                                        </li>
-                                        <li className="list-group-item">
-                                            <i className="fa fa-phone mr-5" /> +6281 903 xxx xxx
-                                        </li>
-                                    </ul>
-                                </div>
-                                {/* /.panel-body */}
-                            </div>
-                            {/* /.panel */}
+                <>
+                    <link rel="stylesheet" href="css/style.css" />
+                    <link
+                        rel="stylesheet"
+                        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+                    />
+                    <nav>
+                        <div className="nav-left">
+                            <img src={logo} className="logo" />
+                            <ul>
+                                <li>
+                                    <img src="../assets/notification.png" />
+                                </li>
+                                <li>
+                                    <img src="../assets/inbox.png" />
+                                </li>
+                                <li>
+                                    <img src="../assets/video.png" />
+                                </li>
+                            </ul>
                         </div>
-                        <div className="col-lg-9 col-md-9 col-sm-8">
-                            <div className="profile-cover">
-                                <div className="cover rounded shadow no-overflow">
-                                    <div className="inner-cover">
-                                        {/* Start offcanvas btn group menu: This menu will take position at the top of profile cover (mobile only). */}
-                                        <div className="btn-group cover-menu-mobile hidden-lg hidden-md">
-                                            <button
-                                                type="button"
-                                                className="btn btn-theme btn-sm dropdown-toggle"
-                                                data-toggle="dropdown"
-                                            >
-                                                <i className="fa fa-bars" />
-                                            </button>
-                                            <ul className="dropdown-menu pull-right no-border" role="menu">
-                                                <li className="active">
-                                                    <a href="#">
-                                                        <i className="fa fa-fw fa-clock-o" /> <span>Timeline</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <i className="fa fa-fw fa-user" /> <span>About</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <i className="fa fa-fw fa-photo" /> <span>Photos</span>{" "}
-                                                        <small>(98)</small>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <i className="fa fa-fw fa-users" />
-                                                        <span> Friends </span>
-                                                        <small>(23)</small>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <i className="fa fa-fw fa-envelope" /> <span>Messages</span>{" "}
-                                                        <small>(7 new)</small>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <img
-                                            src="https://bootdey.com/img/Content/flores-amarillas-wallpaper.jpeg"
-                                            className="img-responsive full-width"
-                                            alt="cover"
-                                            style={{ maxHeight: 200 }}
-                                        />
-                                    </div>
-                                    <ul className="list-unstyled no-padding hidden-sm hidden-xs cover-menu">
-                                        <li className="active">
-                                            <a href="#">
-                                                <i className="fa fa-fw fa-clock-o" /> <span>Timeline</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i className="fa fa-fw fa-user" /> <span>About</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i className="fa fa-fw fa-photo" /> <span>Photos</span>{" "}
-                                                <small>(98)</small>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i className="fa fa-fw fa-users" />
-                                                <span> Friends </span>
-                                                <small>(23)</small>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                {/* /.cover */}
+                        <div className="nav-right">
+                            <div className="search-box">
+                                <img src="../assets/search.png" />
+                                <input type="text" placeholder="Search" />
                             </div>
-                            {/* /.profile-cover */}
-                            <div className="divider" />
-                            <div className="panel rounded shadow">
-                                <form action="...">
+                            <div className="nav-user-icon online" 
+                            // onclick="settingsMenuToggle();"
+                            >
+                                <img src="../assets/profile-pic.png" />
+                            </div>
+                        </div>
+                        <div className="settings-menu">
+                            <div id="dark-btn">
+                                <span />
+                            </div>
+                            <div className="settings-menu-inner">
+                                <div className="user-profile">
+                                    <img src="../assets/profile-pic.png" />
+                                    <div>
+                                        <p>John Nicholson</p>
+                                        <a href="#">See Your Profile</a>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div className="user-profile">
+                                    <img src="../assets/feedback.png" />
+                                    <div>
+                                        <p>Give Feedback</p>
+                                        <a href="#">Help us to improve the new design</a>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div className="settings-links">
+                                    <img src="../assets/setting.png" className="settings-icon" />
+                                    <a href="#">Settings &amp; Privacy</a>
+                                    <img src="../assets/arrow.png" width="10px" />
+                                </div>
+                                <div className="settings-links">
+                                    <img src="../assets/help.png" className="settings-icon" />
+                                    <a href="#">Help &amp; Support</a>
+                                    <img src="../assets/arrow.png" width="10px" />
+                                </div>
+                                <div className="settings-links">
+                                    <img src="../assets/display.png" className="settings-icon" />
+                                    <a href="#">Display &amp; Accessibility</a>
+                                    <img src="../assets/arrow.png" width="10px" />
+                                </div>
+                                <div className="settings-links">
+                                    <img src="../assets/logout.png" className="settings-icon" />
+                                    <a href="#">Logout</a>
+                                    <img src="../assets/arrow.png" width="10px" />
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                    <div className="container">
+                        <div className="left-sidebar">
+                            <div className="imp-links">
+                                <a href="#">
+                                    <img src="../assets/news.png" />
+                                    Latest news
+                                </a>
+                                <a href="#">
+                                    <img src="../assets/friends.png" />
+                                    Friends
+                                </a>
+                                <a href="#">
+                                    <img src="../assets/group.png" />
+                                    Groups
+                                </a>
+                                <a href="#">
+                                    <img src="../assets/marketplace.png" />
+                                    Marketplace
+                                </a>
+                                <a href="#">
+                                    <img src="../assets/watch.png" />
+                                    Watch
+                                </a>
+                                <a href="#">See More</a>
+                            </div>
+                            <div className="shortcut-links">
+                                <p>Your Shortcuts</p>
+                                <a href="#">
+                                    <img src="../assets/shortcut-1.png" />
+                                    Web Developers
+                                </a>
+                                <a href="#">
+                                    <img src="../assets/shortcut-2.png" />
+                                    Web Design Course
+                                </a>
+                                <a href="#">
+                                    <img src="../assets/shortcut-3.png" />
+                                    Full Stact Development
+                                </a>
+                                <a href="#">
+                                    <img src="../assets/shortcut-4.png" />
+                                    Website Experts
+                                </a>
+                            </div>
+                        </div>
+                        <div className="main-content">
+                            <div className="story-gallery">
+                                <div className="story story1">
+                                    <img src="../assets/upload.png" />
+                                    <p>Post Story</p>
+                                </div>
+                                <div className="story story2">
+                                    <img src="../assets/member-1.png" />
+                                    <p>Alison</p>
+                                </div>
+                                <div className="story story3">
+                                    <img src="../assets/member-2.png" />
+                                    <p>Jackson</p>
+                                </div>
+                                <div className="story story4">
+                                    <img src="../assets/member-3.png" />
+                                    <p>Samona</p>
+                                </div>
+                                <div className="story story5">
+                                    <img src="../assets/member-4.png" />
+                                    <p>John</p>
+                                </div>
+                            </div>
+                            <div className="write-post-container">
+                                <div className="user-profile">
+                                    <img src="../assets/profile-pic.png" />
+                                    <div>
+                                        <p>John Nicholson</p>
+                                        <small>
+                                            Public
+                                            <i className="fas fa fa-caret-down" />
+                                        </small>
+                                    </div>
+                                </div>
+                                <div className="post-input-container">
                                     <textarea
-                                        className="form-control input-lg no-border"
-                                        rows={2}
-                                        placeholder="What are you doing?..."
+                                        rows={3}
+                                        placeholder="What's on your mind, John?"
                                         defaultValue={""}
                                     />
-                                </form>
-                                <div className="panel-footer">
-                                    <button className="btn btn-success pull-right mt-5">POST</button>
-                                    <ul className="nav nav-pills">
-                                        <li>
-                                            <a href="#">
-                                                <i className="fa fa-user" />
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i className="fa fa-map-marker" />
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i className="fa fa-camera" />
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i className="fa fa-smile-o" />
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    {/* /.nav nav-pills */}
+                                    <div className="add-post-links">
+                                        <a href="#">
+                                            <img src="../assets/live-video.png" />
+                                            Live Video
+                                        </a>
+                                        <a href="#">
+                                            <img src="../assets/photo.png" />
+                                            Photo/Video
+                                        </a>
+                                        <a href="#">
+                                            <img src="../assets/feeling.png" />
+                                            Feeling/Activity
+                                        </a>
+                                    </div>
                                 </div>
-                                {/* /.panel-footer */}
                             </div>
-                            {/* /.panel */}
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="panel panel-success rounded shadow">
-                                        <div className="panel-heading no-border">
-                                            <div className="pull-left half">
-                                                <div className="media">
-                                                    <div className="media-object pull-left">
-                                                        <img
-                                                            src="https://bootdey.com/img/Content/avatar/avatar2.png"
-                                                            alt="..."
-                                                            className="img-circle img-post"
-                                                        />
-                                                    </div>
-                                                    <div className="media-body">
-                                                        <a
-                                                            href="#"
-                                                            className="media-heading block mb-0 h4 text-white"
-                                                        >
-                                                            John Doe
-                                                        </a>
-                                                        <span className="text-white h6">on 8th June, 2014</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {/* /.pull-left */}
-                                            <div className="pull-right">
-                                                <a href="#" className="text-white h4">
-                                                    <i className="fa fa-heart" /> 15.5K
-                                                </a>
-                                            </div>
-                                            {/* /.pull-right */}
-                                            <div className="clearfix" />
+                            <div className="post-container">
+                                <div className="post-row">
+                                    <div className="user-profile">
+                                        <img src="../assets/profile-pic.png" />
+                                        <div>
+                                            <p>John Nicholson</p>
+                                            <span>June 21 2021, 13:40</span>
                                         </div>
-                                        {/* /.panel-heading */}
-                                        <div className="panel-body no-padding">
-                                            <img
-                                                src="https://www.bootdey.com/image/340x210/"
-                                                alt="..."
-                                                className="img-responsive full-width"
-                                            />
-                                            <div className="inner-all block">
-                                                view all <a href="#">7 comments</a>
-                                            </div>
-                                            {/* /.inner-all */}
-                                            <div className="line no-margin" />
-                                            {/* /.line */}
-                                            <div className="media inner-all no-margin">
-                                                <div className="pull-left">
-                                                    <img
-                                                        src="https://bootdey.com/img/Content/avatar/avatar6.png"
-                                                        alt="..."
-                                                        className="img-post2"
-                                                    />
-                                                </div>
-                                                {/* /.pull-left */}
-                                                <div className="media-body">
-                                                    <a href="#" className="h4">
-                                                        John Doe
-                                                    </a>
-                                                    <small className="block text-muted">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.{" "}
-                                                    </small>
-                                                    <em className="text-xs text-muted">
-                                                        Posted on <span className="text-danger">Dec 08, 2014</span>
-                                                    </em>
-                                                </div>
-                                                {/* /.media-body */}
-                                            </div>
-                                            {/* /.media */}
-                                            <div className="line no-margin" />
-                                            {/* /.line */}
-                                            <div className="media inner-all no-margin">
-                                                <div className="pull-left">
-                                                    <img
-                                                        src="https://bootdey.com/img/Content/avatar/avatar4.png"
-                                                        alt="..."
-                                                        className="img-post2"
-                                                    />
-                                                </div>
-                                                {/* /.pull-left */}
-                                                <div className="media-body">
-                                                    <a href="#" className="h4">
-                                                        John Doe
-                                                    </a>
-                                                    <small className="block text-muted">
-                                                        Quaerat, impedit minus non commodi facere doloribus nemo ea
-                                                        voluptate nesciunt deleniti.
-                                                    </small>
-                                                    <em className="text-xs text-muted">
-                                                        Posted on <span className="text-danger">Dec 08, 2014</span>
-                                                    </em>
-                                                </div>
-                                                {/* /.media-body */}
-                                            </div>
-                                            {/* /.media */}
-                                        </div>
-                                        {/* /.panel-body */}
-                                        <div className="panel-footer">
-                                            <form action="#" className="form-horizontal">
-                                                <div className="form-group has-feedback no-margin">
-                                                    <input
-                                                        className="form-control"
-                                                        type="text"
-                                                        placeholder="Your comment here..."
-                                                    />
-                                                    <button
-                                                        type="submit"
-                                                        className="btn btn-theme fa fa-search form-control-feedback"
-                                                    />
-                                                </div>
-                                            </form>
-                                        </div>
-                                        {/* /.panel-footer */}
                                     </div>
-                                    {/* /.panel */}
+                                    <a href="#">
+                                        <i className="fa fa-ellipsis-v" />
+                                    </a>
                                 </div>
-
-
-
-                                <PostItem></PostItem>
-                                <div className="col-md-6">
-                                    <div className="panel panel-success rounded shadow">
-                                        <div className="panel-heading no-border">
-                                            <div className="pull-left half">
-                                                <div className="media">
-                                                    <div className="media-object pull-left">
-                                                        <img
-                                                            src="https://bootdey.com/img/Content/avatar/avatar6.png"
-                                                            alt="..."
-                                                            className="img-circle img-post"
-                                                        />
-                                                    </div>
-                                                    <div className="media-body">
-                                                        <a
-                                                            href="#"
-                                                            className="media-heading block mb-0 h4 text-white"
-                                                        >
-                                                            John Doe
-                                                        </a>
-                                                        <span className="text-white h6">on 8th June, 2014</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {/* /.pull-left */}
-                                            <div className="pull-right">
-                                                <a href="#" className="text-white h4">
-                                                    <i className="fa fa-heart" /> 15.5K
-                                                </a>
-                                            </div>
-                                            {/* /.pull-right */}
-                                            <div className="clearfix" />
+                                <p className="post-text">
+                                    Subscribe <span>@LetsTryThis</span> YouTube Channel to watch more
+                                    videos on website development and UI Designs.
+                                    <a href="#">#letstrythis</a>
+                                    <a href="#">#youtube</a>
+                                </p>
+                                <img src="../assets/feed-image-1.png" className="post-img" />
+                                <div className="post-row">
+                                    <div className="activity-icons">
+                                        <div>
+                                            <img src="../assets/like-blue.png" />
+                                            120
                                         </div>
-                                        {/* /.panel-heading */}
-                                        <div className="panel-body no-padding">
-                                            <div className="inner-all block">
-                                                <h4>Upload on my album :D</h4>
-                                                <p>
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                                    Expedita, iste omnis fugiat porro consequuntur ratione iure
-                                                    error reprehenderit cum est ab similique magnam molestias
-                                                    aperiam voluptatibus quia aliquid! Sed, minima.
-                                                </p>
-                                                <blockquote className="mb-10">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A,
-                                                    delectus!
-                                                </blockquote>
-                                                <img
-                                                    data-no-retina=""
-                                                    src="https://www.bootdey.com/image/340x210/"
-                                                    alt="..."
-                                                    width={100}
-                                                />
-                                                <img
-                                                    data-no-retina=""
-                                                    src="https://www.bootdey.com/image/340x210/"
-                                                    alt="..."
-                                                    width={100}
-                                                />
-                                                <img
-                                                    data-no-retina=""
-                                                    src="https://www.bootdey.com/image/340x210/"
-                                                    alt="..."
-                                                    width={100}
-                                                />
-                                            </div>
-                                            {/* /.inner-all */}
-                                            <div className="inner-all bg-success">
-                                                view all <a href="#">7 comments</a>
-                                            </div>
+                                        <div>
+                                            <img src="../assets/comments.png" />
+                                            19
                                         </div>
-                                        {/* /.panel-body */}
-                                        <div className="panel-footer no-padding no-border">
-                                            <div className="media inner-all no-margin">
-                                                <div className="pull-left">
-                                                    <img
-                                                        src="https://bootdey.com/img/Content/avatar/avatar3.png"
-                                                        alt="..."
-                                                        className="img-post2"
-                                                    />
-                                                </div>
-                                                {/* /.pull-left */}
-                                                <div className="media-body">
-                                                    <a href="#" className="h4">
-                                                        John Doe
-                                                    </a>
-                                                    <small className="block text-muted">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.{" "}
-                                                    </small>
-                                                    <em className="text-xs text-muted">
-                                                        Posted on <span className="text-danger">Dec 08, 2014</span>
-                                                    </em>
-                                                </div>
-                                                {/* /.media-body */}
-                                            </div>
-                                            {/* /.media */}
-                                            <div className="line no-margin" />
-                                            {/* /.line */}
-                                            <div className="media inner-all no-margin">
-                                                <div className="pull-left">
-                                                    <img
-                                                        src="https://bootdey.com/img/Content/avatar/avatar5.png"
-                                                        alt="..."
-                                                        className="img-post2"
-                                                    />
-                                                </div>
-                                                {/* /.pull-left */}
-                                                <div className="media-body">
-                                                    <a href="#" className="h4">
-                                                        John Doe
-                                                    </a>
-                                                    <small className="block text-muted">
-                                                        Quaerat, impedit minus non commodi facere doloribus nemo ea
-                                                        voluptate nesciunt deleniti.
-                                                    </small>
-                                                    <em className="text-xs text-muted">
-                                                        Posted on <span className="text-danger">Dec 08, 2014</span>
-                                                    </em>
-                                                </div>
-                                                {/* /.media-body */}
-                                            </div>
-                                            {/* /.media */}
-                                            <div className="line no-margin" />
-                                            {/* /.line */}
-                                            <form action="#" className="form-horizontal inner-all">
-                                                <div className="form-group has-feedback no-margin">
-                                                    <input
-                                                        className="form-control"
-                                                        type="text"
-                                                        placeholder="Your comment here..."
-                                                    />
-                                                    <button
-                                                        type="submit"
-                                                        className="btn btn-theme fa fa-search form-control-feedback"
-                                                    />
-                                                </div>
-                                            </form>
-                                            {/* /.form-horizontal */}
+                                        <div>
+                                            <img src="../assets/share.png" />
+                                            120
                                         </div>
-                                        {/* /.panel-footer */}
                                     </div>
-                                    {/* /.panel */}
+                                    <div className="post-profile-icon">
+                                        <img src="../assets/profile-pic.png" />
+                                        <i className="fas fa fa-caret-down" />
+                                    </div>
                                 </div>
+                            </div>
+                            <div className="post-container">
+                                <div className="post-row">
+                                    <div className="user-profile">
+                                        <img src="../assets/member-2.png" />
+                                        <div>
+                                            <p>Jackson Aston</p>
+                                            <span>June 21 2021, 3:40</span>
+                                        </div>
+                                    </div>
+                                    <a href="#">
+                                        <i className="fa fa-ellipsis-v" />
+                                    </a>
+                                </div>
+                                <p className="post-text">
+                                    Like and Share this video with your friends
+                                    <a href="#">#letstrythis</a>
+                                    <a href="#">#youtube</a>
+                                </p>
+                                <img src="../assets/feed-image-2.png" className="post-img" />
+                                <div className="post-row">
+                                    <div className="activity-icons">
+                                        <div>
+                                            <img src="../assets/like.png" />
+                                            120
+                                        </div>
+                                        <div>
+                                            <img src="../assets/comments.png" />
+                                            19
+                                        </div>
+                                        <div>
+                                            <img src="../assets/share.png" />
+                                            120
+                                        </div>
+                                    </div>
+                                    <div className="post-profile-icon">
+                                        <img src="../assets/profile-pic.png" />
+                                        <i className="fas fa fa-caret-down" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="post-container">
+                                <div className="post-row">
+                                    <div className="user-profile">
+                                        <img src="../assets/profile-pic.png" />
+                                        <div>
+                                            <p>John Nicholson</p>
+                                            <span>June 21 2021, 13:40</span>
+                                        </div>
+                                    </div>
+                                    <a href="#">
+                                        <i className="fa fa-ellipsis-v" />
+                                    </a>
+                                </div>
+                                <p className="post-text">
+                                    Subscribe <span>@LetsTryThis</span> YouTube Channel to watch more
+                                    videos on website development and UI Designs.
+                                    <a href="#">#letstrythis</a>
+                                    <a href="#">#youtube</a>
+                                </p>
+                                <img src="../assets/feed-image-3.png" className="post-img" />
+                                <div className="post-row">
+                                    <div className="activity-icons">
+                                        <div>
+                                            <img src="../assets/like.png" />
+                                            120
+                                        </div>
+                                        <div>
+                                            <img src="../assets/comments.png" />
+                                            19
+                                        </div>
+                                        <div>
+                                            <img src="../assets/share.png" />
+                                            120
+                                        </div>
+                                    </div>
+                                    <div className="post-profile-icon">
+                                        <img src="../assets/profile-pic.png" />
+                                        <i className="fas fa fa-caret-down" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="post-container">
+                                <div className="post-row">
+                                    <div className="user-profile">
+                                        <img src="../assets/profile-pic.png" />
+                                        <div>
+                                            <p>John Nicholson</p>
+                                            <span>June 21 2021, 13:40</span>
+                                        </div>
+                                    </div>
+                                    <a href="#">
+                                        <i className="fa fa-ellipsis-v" />
+                                    </a>
+                                </div>
+                                <p className="post-text" />
+                                <img src="../assets/feed-image-4.png" className="post-img" />
+                                <div className="post-row">
+                                    <div className="activity-icons">
+                                        <div>
+                                            <img src="../assets/like.png" />
+                                            120
+                                        </div>
+                                        <div>
+                                            <img src="../assets/comments.png" />
+                                            19
+                                        </div>
+                                        <div>
+                                            <img src="../assets/share.png" />
+                                            120
+                                        </div>
+                                    </div>
+                                    <div className="post-profile-icon">
+                                        <img src="../assets/profile-pic.png" />
+                                        <i className="fas fa fa-caret-down" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="post-container">
+                                <div className="post-row">
+                                    <div className="user-profile">
+                                        <img src="../assets/profile-pic.png" />
+                                        <div>
+                                            <p>John Nicholson</p>
+                                            <span>June 21 2021, 13:40</span>
+                                        </div>
+                                    </div>
+                                    <a href="#">
+                                        <i className="fa fa-ellipsis-v" />
+                                    </a>
+                                </div>
+                                <p className="post-text">Meeting going on</p>
+                                <img src="../assets/feed-image-5.png" className="post-img" />
+                                <div className="post-row">
+                                    <div className="activity-icons">
+                                        <div>
+                                            <img src="../assets/like.png" />
+                                            120
+                                        </div>
+                                        <div>
+                                            <img src="../assets/comments.png" />
+                                            19
+                                        </div>
+                                        <div>
+                                            <img src="../assets/share.png" />
+                                            120
+                                        </div>
+                                    </div>
+                                    <div className="post-profile-icon">
+                                        <img src="../assets/profile-pic.png" />
+                                        <i className="fas fa fa-caret-down" />
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" className="load-more-btn">
+                                Load More
+                            </button>
+                        </div>
+                        <div className="right-sidebar">
+                            <div className="sidebar-title">
+                                <h4>Events</h4>
+                                <a href="#">See All</a>
+                            </div>
+                            <div className="event">
+                                <div className="left-event">
+                                    <h3>18</h3>
+                                    <span>March</span>
+                                </div>
+                                <div className="right-event">
+                                    <h4>Social Media</h4>
+                                    <p>
+                                        <i className="fa fa-map-marker" />
+                                        Willson Tech Park
+                                    </p>
+                                    <a href="#">More Info</a>
+                                </div>
+                            </div>
+                            <div className="event">
+                                <div className="left-event">
+                                    <h3>22</h3>
+                                    <span>June</span>
+                                </div>
+                                <div className="right-event">
+                                    <h4>Mobile Marketing</h4>
+                                    <p>
+                                        <i className="fa fa-map-marker" />
+                                        Willson Tech Park
+                                    </p>
+                                    <a href="#">More Info</a>
+                                </div>
+                            </div>
+                            <div className="sidebar-title">
+                                <h4>Advertisement</h4>
+                                <a href="#">Close</a>
+                            </div>
+                            <img src="../assets/advertisement.png" className="sidebar-ads" />
+                            <div className="sidebar-title">
+                                <h4>Conversation</h4>
+                                <a href="#">Hide Chat</a>
+                            </div>
+                            <div className="online-list">
+                                <div className="online">
+                                    <img src="../assets/member-1.png" />
+                                </div>
+                                <p>Alison Mina</p>
+                            </div>
+                            <div className="online-list">
+                                <div className="online">
+                                    <img src="../assets/member-2.png" />
+                                </div>
+                                <p>Jackson Aston</p>
+                            </div>
+                            <div className="online-list">
+                                <div className="online">
+                                    <img src="../assets/member-3.png" />
+                                </div>
+                                <p>Samona Rose</p>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div className="footer">
+                        <p>Copyright 2021 - Lets Try This YouTube Channel</p>
+                    </div>
+                </>
 
             </MainLayout>
         </>
