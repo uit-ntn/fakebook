@@ -1,89 +1,83 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
-
-body {
-    background-color: #eee;
-    font-family: "Poppins", sans-serif;
-    font-weight: 300
+.user-profile {
+	display: flex;
+	align-items: center;
 }
 
-.card {
-    border: none
+.user-profile img {
+	width: 45px;
+	border-radius: 50%;
+	margin-right: 10px;
 }
 
-.ellipsis {
-    color: #a09c9c
+.user-profile p {
+	margin-bottom: 5px;
+	font-weight: 500;
+	color: #626262;
 }
 
-hr {
-    color: #a09c9c;
-    margin-top: 4px;
-    margin-bottom: 8px
+.user-profile small {
+	font-size: 12px;
 }
 
-.muted-color {
-    color: #a09c9c;
-    font-size: 13px
+.user-profile span {
+	font-size: 13px;
+	color: #9a9a9a;
 }
 
-.ellipsis i {
-    margin-top: 3px;
-    cursor: pointer
+.post-text {
+	color: #9a9a9a;
+	margin: 15px 0;
+	font-size: 15px;
 }
 
-.icons i {
-    font-size: 25px
+.post-text span {
+	color: #626262;
+	font-weight: 500;
 }
 
-.icons .fa-heart {
-    color: red
+.post-text a {
+	color: #1876f2;
+	text-decoration: none;
 }
 
-.icons .fa-smile-o {
-    color: yellow;
-    font-size: 29px
+.post-img {
+	width: 100%;
+	border-radius: 4px;
+	margin-bottom: 5px;
 }
 
-.rounded-image {
-    border-radius: 50% !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    width: 50px
+.post-row {
+	margin-top: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
-.name {
-    font-weight: 600
+
+
+.activity-icons div img {
+
+	width: 18px;
+	margin-right: 10px;
 }
 
-.comment-text {
-    font-size: 12px
+.activity-icons div {
+	display: inline-flex;
+	align-items: center;
+	margin-right: 30px;
 }
 
-.status small {
-    margin-right: 10px;
-    color: blue
+.post-profile-icon {
+	display: flex;
+	align-items: center;
 }
 
-.form-control {
-    border-radius: 26px
+.post-profile-icon img {
+	width: 20px;
+	border-radius: 50%;
+	margin-right: 5px;
 }
 
-.comment-input {
-    position: relative
-}
-
-.fonts {
-    position: absolute;
-    right: 13px;
-    top: 8px;
-    color: #a09c9c
-}
-
-.form-control:focus {
-    color: #495057;
-    background-color: #fff;
-    border-color: #8bbafe;
-    outline: 0;
-    box-shadow: none
+.post-row a {
+	color: #9a9a9a;
 }
