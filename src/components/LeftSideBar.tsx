@@ -5,7 +5,7 @@ import news from "../assets/news.png"
 import watch from "../assets/watch.png"
 import "../styles/LeftSideBar.css"
 
-const LeftSideBar = () => {
+const LeftSidebar = () => {
     return (
         <div className="left-sidebar">
             <div className="imp-links">
@@ -37,4 +37,4 @@ const LeftSideBar = () => {
 
 }
 
-export default LeftSideBar;
+export default LeftSidebar;

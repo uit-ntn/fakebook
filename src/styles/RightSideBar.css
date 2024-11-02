@@ -1,58 +1,58 @@
-
 .right-sidebar {
-	flex-basis: 25%;
-	position: sticky;
-	top: 70px;
-	align-self: flex-start;
-	background: var(--bg-color);
-	padding: 20px;
-	border-radius: 4px;
-	color: #626262;
+    flex-basis: 25%;
+    position: sticky;
+    top: 70px;
+    align-self: flex-start;
+    background: var(--bg-color);
+    padding: 20px;
+    border-radius: 4px;
+    color: #626262;
 }
+
 .sidebar-title {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
 }
 
 .right-sidebar h4 {
-	font-weight: 600;
-	font-size: 16px;
+    font-weight: 600;
+    font-size: 16px;
 }
 
 .sidebar-title a {
-	text-decoration: none;
-	color: var(--nav-color);
-	font-size: 12px;
+    text-decoration: none;
+    color: var(--nav-color);
+    font-size: 12px;
 }
 
 .sidebar-ads {
-	width: 100%;
-	margin-bottom: 20px;
-	border-radius: 4px;
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 4px;
 }
 
 
 /*online list*/
 .online-list {
-	display: flex;
-	align-items: center;
-	margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .online-list .online img {
-	width: 40px;
-	border-radius: 50%;
+    width: 40px;
+    border-radius: 50%;
 }
 
 .online-list .online {
-	width: 40px;
-	border-radius: 50%;
-	margin-right: 15px;
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
 }
 
 .online-list .online:after {
-	top: unset;
-	bottom: 0;
+    top: unset;
+    bottom: 0;
 }
