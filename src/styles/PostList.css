@@ -1,0 +1,9 @@
+
+.post-container {
+	width: 100%;
+	background: var(--bg-color);
+	border-radius: 6px;
+	padding: 20px;
+	color: #626262;
+	margin: 20px 0;
+}
