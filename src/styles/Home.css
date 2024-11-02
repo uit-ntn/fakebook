@@ -154,11 +154,7 @@ nav{
 	color:var(--nav-color);
 	font-size: 12px;
 }
-.event{
-	display: flex;
-	font-size: 14px;
-	margin-bottom: 20px;
-}
+
 .left-event{
 	border-radius: 10px;
 	height:65px;
@@ -170,24 +166,7 @@ nav{
 	overflow:hidden;
 	box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-.event p{
-	font-size:12px;
-}
-.event a{
-	font-size: 12px;
-	text-decoration: none;
-	color:var(--nav-color);
-}
-.left-event span{
-	position: absolute;
-	bottom:0;
-	left:0;
-	width: 100%;
-	background: var(--nav-color);
-	color:#fff;
-	font-size:10px;
-	padding:4px 0;
-}
+
 .sidebar-ads{
 	width: 100%;
 	margin-bottom: 20px;

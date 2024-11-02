@@ -1,88 +1,100 @@
-import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
+import arrow from "../assets/arrow.png"
+import display from "../assets/display.png"
 
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
-}));
+import feedback from "../assets/feedback.png"
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
+import help from "../assets/help.png"
+import inbox from "../assets/inbox.png"
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  width: '100%',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
-    },
-  },
-}));
+import logo from "../assets/logo.png"
+import logout from "../assets/logout.png"
+
+import notification from "../assets/notification.png"
+import profile_pic from "../assets/profile-pic.png"
+import search from "../assets/search.png"
+import setting from "../assets/setting.png"
+
+import video from "../assets/video.png"
+
 
 export default function Header() {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            MUI
-          </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-        </Toolbar>
-      </AppBar>
-    </Box>
+    <nav>
+      <div className="nav-left">
+        <img src={logo} className="logo" />
+        <ul>
+          <li>
+            <img src={notification} />
+          </li>
+          <li>
+            <img src={inbox} />
+          </li>
+          <li>
+            <img src={video} />
+          </li>
+        </ul>
+      </div>
+      <div className="nav-right">
+        <div className="search-box">
+          <img src={search} />
+          <input type="text" placeholder="Search" />
+        </div>
+        <div
+          className="nav-user-icon online"
+          onClick={() => {
+            const element = document.querySelector('.nav-user-icon.online');
+            if (element) {
+              element.classList.toggle('settings-menu-height');
+            }
+          }}
+        >
+
+          <img src={profile_pic} />
+        </div>
+      </div>
+      <div className="settings-menu">
+        <div id="dark-btn">
+          <span />
+        </div>
+        <div className="settings-menu-inner">
+          <div className="user-profile">
+            <img src={profile_pic} />
+            <div>
+              <p>John Nicholson</p>
+              <a href="#">See Your Profile</a>
+            </div>
+          </div>
+          <hr />
+          <div className="user-profile">
+            <img src={feedback} />
+            <div>
+              <p>Give Feedback</p>
+              <a href="#">Help us to improve the new design</a>
+            </div>
+          </div>
+          <hr />
+          <div className="settings-links">
+            <img src={setting} className="settings-icon" />
+            <a href="#">Settings &amp; Privacy</a>
+            <img src={arrow} width="10px" />
+          </div>
+          <div className="settings-links">
+            <img src={help} className="settings-icon" />
+            <a href="#">Help &amp; Support</a>
+            <img src={arrow} width="10px" />
+          </div>
+          <div className="settings-links">
+            <img src={display} className="settings-icon" />
+            <a href="#">Display &amp; Accessibility</a>
+            <img src={arrow} width="10px" />
+          </div>
+          <div className="settings-links">
+            <img src={logout} className="settings-icon" />
+            <a href="#">Logout</a>
+            <img src={arrow} width="10px" />
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 }
