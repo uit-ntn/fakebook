@@ -1,7 +1,7 @@
 import MainLayout from "../layouts/main_layout";
-import LeftSideBar from "../components/LeftSidebar";
 import PostList from "../components/PostList";
 import StoryList from "../components/StoryList";
+import LeftSideBar from "../components/LeftSidebar";
 import RightSideBar from "../components/RightSideBar";
 import WritePost from "../components/WritePost";
 import "../styles/Home.css"
