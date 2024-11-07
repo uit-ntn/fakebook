@@ -1,38 +1,40 @@
+import { Box } from "@mui/material"
 import friend from "../assets/friends.png"
 import group from "../assets/group.png"
 import marketplace from "../assets/marketplace.png"
 import news from "../assets/news.png"
 import watch from "../assets/watch.png"
 import "../styles/LeftSideBar.css"
+import { Link } from "react-router-dom"
 
 const LeftSidebar = () => {
     return (
-        <div className="left-sidebar">
-            <div className="imp-links">
-                <a href="#">
+        <Box className="left-sidebar">
+            <Box className="imp-links">
+                <Link to="#">
                     <img src={news} />
                     Latest news
-                </a>
-                <a href="#">
+                </Link>
+                <Link to="#">
                     <img src={friend} />
                     Friends
-                </a>
-                <a href="#">
+                </Link>
+                <Link to="#">
                     <img src={group} />
                     Groups
-                </a>
-                <a href="#">
+                </Link>
+                <Link to="#">
                     <img src={marketplace} />
                     Marketplace
-                </a>
-                <a href="#">
+                </Link>
+                <Link to="#">
                     <img src={watch} />
                     Watch
-                </a>
-                <a href="#">See More</a>
-            </div>
+                </Link>
+                <Link to="#">See More</Link>
+            </Box>
 
-        </div>
+        </Box>
     )
 
 }

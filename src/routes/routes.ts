@@ -1,5 +1,6 @@
 import React from "react";
 import Home from "../pages/Home";
+import ChatLayout from "../layouts/chat_layout";
 
 interface RouteType {
   path: string;
@@ -10,6 +11,7 @@ const privateRoutes: RouteType[] = [];
 
 const publicRoutes: RouteType[] = [
   { path: "/", page: Home },
+  {path : "/chat", page : ChatLayout}
 ];
 
 const adminRoutes: RouteType[] = [];

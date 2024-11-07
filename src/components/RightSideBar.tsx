@@ -3,35 +3,35 @@ import member_1 from "../assets/member-1.png"
 import member_2 from "../assets/member-2.png"
 import member_3 from "../assets/member-3.png"
 import member_4 from "../assets/member-4.png"
-
+import { Box, Typography } from "@mui/material"
 import "../styles/RightSideBar.css"
 
 const RightSideBar = () => {
     return (
-        <div className="right-sidebar">
+        <Box className="right-sidebar">
             <img src={advertisement} className="sidebar-ads" />
-            <div className="sidebar-title">
-                <h4>Conversation</h4>
-            </div>
-            <div className="online-list">
-                <div className="online">
+            <Box className="sidebar-title">
+                <Typography variant="h4">Conversation</Typography>
+            </Box>
+            <Box className="online-list">
+                <Box className="online">
                     <img src={member_1} />
-                </div>
-                <p>Alison Mina</p>
-            </div>
-            <div className="online-list">
-                <div className="online">
+                </Box>
+                <Typography>Alison Mina</Typography>
+            </Box>
+            <Box className="online-list">
+                <Box className="online">
                     <img src={member_2} />
-                </div>
-                <p>Jackson Aston</p>
-            </div>
-            <div className="online-list">
-                <div className="online">
+                </Box>
+                <Typography>Jackson Aston</Typography>
+            </Box>
+            <Box className="online-list">
+                <Box className="online">
                     <img src={member_3} />
-                </div>
-                <p>Samona Rose</p>
-            </div>
-        </div>
+                </Box>
+                <Typography>Samona Rose</Typography>
+            </Box>
+        </Box>
     )
 }
 

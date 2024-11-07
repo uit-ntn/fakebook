@@ -1,11 +1,12 @@
 import PostItem from "./PostItem";
 import "../styles/PostList.css"
+import { Box } from "@mui/material";
 
 const PostList = () => {
     return (
-        <div className="post-container">
+        <Box className="post-container">
             <PostItem></PostItem>
-        </div>
+        </Box>
     )
 }
 

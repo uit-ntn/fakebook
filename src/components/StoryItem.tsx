@@ -1,3 +1,4 @@
+import { Box, Typography } from "@mui/material"
 import member_1 from "../assets/member-1.png"
 import member_2 from "../assets/member-2.png"
 import member_3 from "../assets/member-3.png"
@@ -8,26 +9,26 @@ import "../styles/StoryItem.css"
 const StoryItem = () => {
     return (
         <>
-            <div className="story story1">
+            <Box className="story story1">
                 <img src={upload} />
-                <p>Post Story</p>
-            </div>
-            <div className="story story2">
+                <Typography>Post Story</Typography>
+            </Box>
+            <Box className="story story2">
                 <img src={member_1} />
-                <p>Alison</p>
-            </div>
-            <div className="story story3">
+                <Typography>Alison</Typography>
+            </Box>
+            <Box className="story story3">
                 <img src={member_2} />
-                <p>Jackson</p>
-            </div>
-            <div className="story story4">
+                <Typography>Jackson</Typography>
+            </Box>
+            <Box className="story story4">
                 <img src={member_3} />
-                <p>Samona</p>
-            </div>
-            <div className="story story5">
+                <Typography>Samona</Typography>
+            </Box>
+            <Box className="story story5">
                 <img src={member_4} />
-                <p>John</p>
-            </div>
+                <Typography>John</Typography>
+            </Box>
         </>
     )
 }
