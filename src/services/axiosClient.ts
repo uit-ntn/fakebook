@@ -20,7 +20,7 @@ const AxiosClient: AxiosInstance = axios.create({
 AxiosClient.interceptors.request.use(
     async (config) => {
         const newConfig = config;
-        let token = null;
+        let token: any = null;
         token = getToken();
         if (token) {
             newConfig.headers.Authorization = `Bearer ${token}`;
@@ -44,7 +44,7 @@ AxiosClient.interceptors.response.use(
         if (error?.response?.status === 401 && !!rftk && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
-                const res: RefreshTokenResponse = await AxiosClient.post("/authentication/refresh-token", { refreshToken: rftk });
+                const res: RefreshTokenResponse = await AxiosClient.post("/auth/refreshToken", { refreshToken: rftk });
                 const { accessToken, refreshToken } = res;
                 // console.log(res);
                 setToken(accessToken);

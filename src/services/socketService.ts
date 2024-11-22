@@ -1,27 +1,27 @@
-import { Socket, io } from "socket.io-client";
-import { API_ENDPOINT } from "@utils/varibaleLocal";
+import { Socket, io } from 'socket.io-client';
+import { API_ENDPOINT } from '../utils/endpoints';
 
-export const socket: Socket = io(`${API_ENDPOINT}/app`, {
-	transports: ["websocket"],
-	reconnection: true,
+export const socket: Socket = io(`${API_ENDPOINT}/chat`, {
+    transports: ['websocket', 'polling'],
+    reconnection: true,
 });
 
 export const socketOn = (eventName: any, callback: any) => {
-	return socket.on(eventName, callback);
+    return socket.on(eventName, callback);
 };
 
 export const socketConnect = () => {
-	return socket.connect();
+    return socket.connect();
 };
 
 export const socketOff = (eventName: any) => {
-	return socket.off(eventName);
+    return socket.off(eventName);
 };
 
 export const socketDisconnect = () => {
-	return socket.disconnect();
+    return socket.disconnect();
 };
 
 export const socketEmit = (eventName: any, origin: any) => {
-	return socket.emit(eventName, origin);
+    return socket.emit(eventName, origin);
 };

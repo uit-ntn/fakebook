@@ -29,6 +29,9 @@ const userApi = {
     refreshToken: (refreshToken: string) => {
         return AxiosClient.post(API_ENDPOINT + "/refresh-token", { refreshToken });
     },
+    getInfo: () => {
+        return AxiosClient.get("user/info");
+    },
 };
 
 export default userApi;

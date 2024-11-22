@@ -1,1 +1,1 @@
-export const API_ENDPOINT = "https://simplesocialds.me/";
+export const API_ENDPOINT = "https://simplesocialds.me";
