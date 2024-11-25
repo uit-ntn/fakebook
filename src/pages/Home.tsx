@@ -13,25 +13,23 @@ import { setUserInfo } from '../redux/userSlice';
 import { getToken } from '../utils/localStorage';
 
 const Home = () => {
-    const [id, setId] = useState<string>('');
     const dispatch = useDispatch();
 
     const getUserInfo = async () => {
         const accessToken = getToken();
         if (accessToken) {
-            const response = await userApi.getInfo();
-            if (response) {
-                console.log(response);
-                dispatch(setUserInfo(response));
-                setId(response._id);
+            const res = await userApi.getInfo();
+            if (res) {
+                console.log(res);
+                dispatch(setUserInfo(res));
+                socketEmit('connection', res?._id);
             }
         }
     };
 
     useEffect(() => {
         getUserInfo();
-        socketEmit('connection', id);
-    }, [id]);
+    }, []);
 
     return (
         <>

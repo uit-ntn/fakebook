@@ -15,36 +15,27 @@ import {
 import MessageBubble from '../components/MessageBubble';
 import friendApi from '../services/friendServices';
 import { socketEmit, socketOn } from '../services/socketService';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../redux/userSlice';
+import messageApi from '../services/messageServices';
 
 const ChatLayout: React.FC = () => {
     const [friendList, setFriendList] = useState([]);
-    const [message, setMessage] = useState(''); // Add state for message input
-    const [listMessage, setListMessage] = useState([
-        {
-            sendId: '66fac95f801d6ee1858626e8',
-            receiveId: '66fac955801d6ee1858626e5',
-            content: 'hello world',
-        },
-        {
-            sendId: '66fac95f801d6ee1858626e8',
-            receiveId: '66fac955801d6ee1858626e5',
-            content: 'hello asdasdasdasdasdas',
-        },
-        {
-            sendId: '66fac95f801d6ee1858626e8',
-            receiveId: '66fac955801d6ee1858626e5',
-            content: 'DAYUMMMMM!!!!!!!',
-        },
-        {
-            sendId: '66fac955801d6ee1858626e5',
-            receiveId: '66fac95f801d6ee1858626e8',
-            content: 'hello there!!!!',
-        },
-    ]);
+    const [message, setMessage] = useState('');
+    const [listMessage, setListMessage] = useState<any[]>([]);
+    const [friendSelected, setFriendSelected] = useState('');
+    const userInfo = useSelector(userSelector);
+
+    console.log(userInfo);
+    console.log(friendSelected);
 
     useEffect(() => {
         getListFriend();
     }, []);
+
+    useEffect(() => {
+        getListMessage();
+    }, [friendSelected]);
 
     useEffect(() => {
         socketOn('privateMessage', (data: any) => {
@@ -56,8 +47,17 @@ const ChatLayout: React.FC = () => {
     const getListFriend = async () => {
         await friendApi.getList().then((res) => {
             const friendAccept = res.filter((friend: any) => friend.status === 'ACCEPTED');
-            console.log(friendAccept);
+            console.log('Friend object structure:', friendAccept[0]); // Add this line to inspect the structure
+            setFriendSelected(friendAccept[0]?.userId._id); // Set the first friend as the selected friend
             setFriendList(friendAccept);
+        });
+    };
+
+    const getListMessage = async () => {
+        // Call the API to get the list of messages
+        await messageApi.getList(friendSelected).then((res) => {
+            console.log(res);
+            setListMessage(res);
         });
     };
 
@@ -65,8 +65,8 @@ const ChatLayout: React.FC = () => {
         e.preventDefault();
         console.log(message);
         socketEmit('private-message', {
-            sendId: '66fac95f801d6ee1858626e8',
-            receiveId: '66fac955801d6ee1858626e5',
+            sendId: userInfo?._id,
+            receiveId: friendSelected,
             content: message, // Use the message state
         });
         setMessage(''); // Clear the input after sending
@@ -103,8 +103,14 @@ const ChatLayout: React.FC = () => {
                 <Divider />
                 <List>
                     {friendList.map((friend: any) => (
-                        <ListItemButton key={friend?.userId.username}>
-                            <ListItemText primary={friend?.userId.username} secondary="Last message..." />
+                        <ListItemButton
+                            key={friend?.userId._id || friend?.userId.username}
+                            onClick={() => setFriendSelected(friend?.userId._id)}
+                            sx={{
+                                bgcolor: friend?.userId._id === friendSelected ? '#f5f5f5' : 'inherit',
+                            }}
+                        >
+                            <ListItemText primary={friend?.userId.username} secondary={`ID: ${friend?.userId._id}`} />
                         </ListItemButton>
                     ))}
                     {/* Thêm các người dùng khác */}
