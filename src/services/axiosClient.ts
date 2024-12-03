@@ -1,7 +1,7 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance } from 'axios';
 // import { parse, stringify } from "qs";
-import { getRefreshToken, getToken, setRefreshToken, setToken } from "../utils/localStorage";
-import { API_ENDPOINT } from "../utils/endpoints";
+import { getRefreshToken, getToken, setRefreshToken, setToken } from '../utils/localStorage';
+import { API_ENDPOINT } from '../utils/endpoints';
 
 interface RefreshTokenResponse {
     accessToken: string;
@@ -10,10 +10,10 @@ interface RefreshTokenResponse {
 
 const AxiosClient: AxiosInstance = axios.create({
     baseURL: API_ENDPOINT,
-    responseType: "json",
+    responseType: 'json',
     timeout: 50000,
     headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
     },
 });
 
@@ -44,7 +44,7 @@ AxiosClient.interceptors.response.use(
         if (error?.response?.status === 401 && !!rftk && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
-                const res: RefreshTokenResponse = await AxiosClient.post("/auth/refreshToken", { refreshToken: rftk });
+                const res: RefreshTokenResponse = await AxiosClient.post('/auth/refreshToken', { refreshToken: rftk });
                 const { accessToken, refreshToken } = res;
                 // console.log(res);
                 setToken(accessToken);

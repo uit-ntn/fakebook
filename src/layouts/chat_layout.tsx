@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import MessageBubble from '../components/MessageBubble';
 import friendApi from '../services/friendServices';
-import { socketEmit, socketOn } from '../services/socketService';
+import { socketEmit, socketOff, socketOn } from '../services/socketService';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../redux/userSlice';
 import messageApi from '../services/messageServices';
@@ -26,8 +26,9 @@ const ChatLayout: React.FC = () => {
     const [friendSelected, setFriendSelected] = useState('');
     const userInfo = useSelector(userSelector);
 
-    console.log(userInfo);
-    console.log(friendSelected);
+    // console.log(userInfo);
+    // console.log(friendSelected);
+    console.log(listMessage);
 
     useEffect(() => {
         getListFriend();
@@ -39,10 +40,16 @@ const ChatLayout: React.FC = () => {
 
     useEffect(() => {
         socketOn('privateMessage', (data: any) => {
-            console.log(data);
-            setListMessage([...listMessage, data]);
+            if (data) {
+                console.log(data);
+                setListMessage((prevMessages) => [...prevMessages, data]);
+            }
         });
-    }, []);
+
+        return () => {
+            socketOff('privateMessage');
+        };
+    }, []); // <-- Don't add listMessage as dependency to avoid infinite loop
 
     const getListFriend = async () => {
         await friendApi.getList().then((res) => {
@@ -63,7 +70,7 @@ const ChatLayout: React.FC = () => {
 
     const handleChat = (e: any) => {
         e.preventDefault();
-        console.log(message);
+        // console.log(message);
         socketEmit('private-message', {
             sendId: userInfo?._id,
             receiveId: friendSelected,
@@ -110,7 +117,7 @@ const ChatLayout: React.FC = () => {
                                 bgcolor: friend?.userId._id === friendSelected ? '#f5f5f5' : 'inherit',
                             }}
                         >
-                            <ListItemText primary={friend?.userId.username} secondary={`ID: ${friend?.userId._id}`} />
+                            <ListItemText primary={friend?.userId.username} secondary={''} />
                         </ListItemButton>
                     ))}
                     {/* Thêm các người dùng khác */}
@@ -168,6 +175,7 @@ const ChatLayout: React.FC = () => {
                     onSubmit={handleChat}
                 >
                     <TextField
+                        autoComplete="off"
                         variant="outlined"
                         placeholder="Type a message..."
                         fullWidth

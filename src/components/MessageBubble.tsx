@@ -1,5 +1,5 @@
 // MessageBubble.tsx
-import React from 'react';
+import React, { memo } from 'react';
 import { Box, Paper, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../redux/userSlice';
@@ -11,7 +11,6 @@ interface MessageBubbleProps {
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({ message, sender }) => {
     const userInfo = useSelector(userSelector);
-    console.log(userInfo);
     const isSentByMe = sender === userInfo?._id;
 
     return (
@@ -37,4 +36,4 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, sender }) => {
     );
 };
 
-export default MessageBubble;
+export default memo(MessageBubble);
