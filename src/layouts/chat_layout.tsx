@@ -55,7 +55,7 @@ const ChatLayout: React.FC = () => {
         await friendApi.getList().then((res) => {
             const friendAccept = res.filter((friend: any) => friend.status === 'ACCEPTED');
             console.log('Friend object structure:', friendAccept[0]); // Add this line to inspect the structure
-            setFriendSelected(friendAccept[0]?.userId._id); // Set the first friend as the selected friend
+            setFriendSelected(friendAccept[0].friendInfo?._id); // Set the first friend as the selected friend
             setFriendList(friendAccept);
         });
     };
@@ -111,13 +111,13 @@ const ChatLayout: React.FC = () => {
                 <List>
                     {friendList.map((friend: any) => (
                         <ListItemButton
-                            key={friend?.userId._id || friend?.userId.username}
-                            onClick={() => setFriendSelected(friend?.userId._id)}
+                            key={friend?.friendInfo._id || friend?.friendInfo.username}
+                            onClick={() => setFriendSelected(friend?.friendInfo._id)}
                             sx={{
-                                bgcolor: friend?.userId._id === friendSelected ? '#f5f5f5' : 'inherit',
+                                bgcolor: friend?.friendInfo?._id === friendSelected ? '#f5f5f5' : 'inherit',
                             }}
                         >
-                            <ListItemText primary={friend?.userId.username} secondary={''} />
+                            <ListItemText primary={friend?.friendInfo.username} secondary={friend.recentMessage?.content} />
                         </ListItemButton>
                     ))}
                     {/* Thêm các người dùng khác */}
