@@ -1,6 +1,6 @@
 // MessageBubble.tsx
 import React, { memo } from 'react';
-import { Box, Paper, Typography } from '@mui/material';
+import { Avatar, Box, Paper, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../redux/userSlice';
 
@@ -18,15 +18,18 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, sender }) => {
             sx={{
                 display: 'flex',
                 justifyContent: isSentByMe ? 'flex-end' : 'flex-start',
-                mb: 1,
+                alignItems: 'center',
             }}
         >
+            {!isSentByMe && <Avatar sx={{ width: 30, height: 30 }} className="mr-2" />}
             <Paper
                 sx={{
                     padding: 1,
-                    maxWidth: '70%',
+                    maxWidth: '40%',
                     backgroundColor: isSentByMe ? '#DCF8C6' : '#fff',
+                    borderRadius: '20px',
                 }}
+                className="break-all"
             >
                 <Typography variant="body2" color="textPrimary">
                     {message}
