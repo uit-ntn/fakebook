@@ -6,7 +6,6 @@ import {
     Divider,
     List,
     ListItem,
-    ListItemAvatar,
     ListItemButton,
     ListItemText,
     Paper,
@@ -19,9 +18,6 @@ import { socketEmit, socketOff, socketOn } from '../services/socketService';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../redux/userSlice';
 import messageApi from '../services/messageServices';
-import { Avatar } from 'antd';
-import dayjs from 'dayjs';
-import _ from 'lodash';
 
 const ChatLayout: React.FC = () => {
     const [friendList, setFriendList] = useState([]);
@@ -58,8 +54,8 @@ const ChatLayout: React.FC = () => {
     const getListFriend = async () => {
         await friendApi.getList().then((res) => {
             const friendAccept = res.filter((friend: any) => friend.status === 'ACCEPTED');
-            console.log('Friend object structure:', friendAccept); // Add this line to inspect the structure
-            setFriendSelected(friendAccept[0]?.friendInfo._id); // Set the first friend as the selected friend
+            console.log('Friend object structure:', friendAccept[0]); // Add this line to inspect the structure
+            setFriendSelected(friendAccept[0].friendInfo?._id); // Set the first friend as the selected friend
             setFriendList(friendAccept);
         });
     };
@@ -118,24 +114,10 @@ const ChatLayout: React.FC = () => {
                             key={friend?.friendInfo._id || friend?.friendInfo.username}
                             onClick={() => setFriendSelected(friend?.friendInfo._id)}
                             sx={{
-                                bgcolor: friend?.friendInfo._id === friendSelected ? '#f5f5f5' : 'inherit',
-                                borderRadius: 2,
+                                bgcolor: friend?.friendInfo?._id === friendSelected ? '#f5f5f5' : 'inherit',
                             }}
                         >
-                            <ListItemAvatar>
-                                <Avatar size={50} />
-                            </ListItemAvatar>
-                            <ListItemText
-                                className="text-ellipsis overflow-hidden"
-                                primary={friend?.friendInfo.username}
-                                secondary={`${
-                                    !_.isEmpty(friend.recentMessage)
-                                        ? friend.recentMessage?.content +
-                                          ' ∙ ' +
-                                          dayjs(friend.recentMessage?.createdAt).format('HH:mm')
-                                        : ''
-                                }`}
-                            />
+                            <ListItemText primary={friend?.friendInfo.username} secondary={friend.recentMessage?.content} />
                         </ListItemButton>
                     ))}
                     {/* Thêm các người dùng khác */}
@@ -176,7 +158,7 @@ const ChatLayout: React.FC = () => {
                     }}
                 >
                     {listMessage.map((message) => (
-                        <MessageBubble key={message?._id} message={message.content} sender={message.sendId} />
+                        <MessageBubble message={message.content} sender={message.sendId} />
                     ))}
                     {/* Các tin nhắn khác */}
                 </Box>

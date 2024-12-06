@@ -1,30 +1,30 @@
-import { Box } from "@mui/material"
-import feeling from "../assets/feeling.png"
-import live_video from "../assets/live-video.png"
-import photo from "../assets/photo.png"
-import profile_pic from "../assets/profile-pic.png"
-import "../styles/WritePost.css"
-import { Link } from "react-router-dom"
+import { Box } from '@mui/material';
+import feeling from '../assets/feeling.png';
+import live_video from '../assets/live-video.png';
+import photo from '../assets/photo.png';
+import profile_pic from '../assets/profile-pic.png';
+import '../styles/WritePost.css';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../redux/userSlice';
 
 const WritePost = () => {
+    const userInfo = useSelector(userSelector);
+    console.log(userInfo);
     return (
         <Box className="write-post-container">
             <Box className="user-profile">
                 <img src={profile_pic} />
                 <Box>
-                    <p>John Nicholson</p>
-                    <small>
-                        Public
+                    <p>{userInfo?.username}</p>
+                    <div className="flex gap-1">
+                        <small>Public</small>
                         <i className="fas fa fa-caret-down" />
-                    </small>
+                    </div>
                 </Box>
             </Box>
             <Box className="post-input-container">
-                <textarea
-                    rows={3}
-                    placeholder="What's on your mind, John?"
-                    defaultValue={""}
-                />
+                <textarea rows={2} placeholder="What's on your mind, John?" defaultValue={''} />
                 <Box className="add-post-links">
                     <Link to="#">
                         <img src={live_video} />
@@ -41,7 +41,7 @@ const WritePost = () => {
                 </Box>
             </Box>
         </Box>
-    )
-}
+    );
+};
 
 export default WritePost;

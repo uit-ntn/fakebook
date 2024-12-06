@@ -20,7 +20,7 @@ const Home = () => {
         if (accessToken) {
             const res = await userApi.getInfo();
             if (res) {
-                console.log(res);
+                // console.log(res);
                 dispatch(setUserInfo(res));
                 socketEmit('connection', res?._id);
             }
