@@ -117,7 +117,10 @@ const ChatLayout: React.FC = () => {
                                 bgcolor: friend?.friendInfo?._id === friendSelected ? '#f5f5f5' : 'inherit',
                             }}
                         >
-                            <ListItemText primary={friend?.friendInfo.username} secondary={friend.recentMessage?.content} />
+                            <ListItemText
+                                primary={friend?.friendInfo.username}
+                                secondary={friend.recentMessage?.content}
+                            />
                         </ListItemButton>
                     ))}
                     {/* Thêm các người dùng khác */}
