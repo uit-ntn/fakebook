@@ -1,12 +1,13 @@
 import StoryItem from "./StoryItem"
 import "../styles/StoryList.css"
+import Box from "@mui/material/Box";
 
 
 const StoryList = () => {
     return (
-        <div className="story-gallery">
+        <Box className="story-gallery">
            <StoryItem></StoryItem>
-        </div>
+        </Box>
     )
 }
 
