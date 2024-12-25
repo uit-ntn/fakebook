@@ -34,7 +34,8 @@ AxiosClient.interceptors.request.use(
 
 AxiosClient.interceptors.response.use(
     function (response) {
-        return response.data ?? response;
+        const res: any = response.data;
+        return res;
     },
 
     async function (error) {

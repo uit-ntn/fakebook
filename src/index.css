@@ -15,3 +15,9 @@
     --nav-color: #1876f2;
     --bg-color: #fff;
 }
+
+@layer base {
+  :root {
+        --radius: 0.5rem;
+    }
+}
