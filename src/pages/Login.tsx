@@ -1,27 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Divider from '@mui/material/Divider';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
-import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-// import ForgotPassword from "./ForgotPassword";
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../components/CustomIcons';
-import userApi from '../services/authServices';
-import { setRefreshToken, setToken } from '../utils/localStorage';
-import { loginUser } from '../redux/userThunk';
 import { useDispatch } from 'react-redux';
-// import AppTheme from "../shared-theme/AppTheme";
-// import ColorModeSelect from "../shared-theme/ColorModeSelect";
+import type { AppDispatch } from '../redux/store'; // Import AppDispatch
+import { loginUser } from '../redux/userThunk';
 
+// Styled components
 const Card = styled(MuiCard)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -60,59 +57,41 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
     },
 }));
 
-export default function Login(props: { disableCustomTheme?: boolean }) {
-    const [emailError, setEmailError] = React.useState(false);
-    const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
-    const [passwordError, setPasswordError] = React.useState(false);
-    const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-    const [open, setOpen] = React.useState(false);
-    const dispatch = useDispatch();
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
+export default function Login() {
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
+    const [passwordError, setPasswordError] = useState(false);
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const [loginError, setLoginError] = useState(''); // State để lưu lỗi đăng nhập
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const username = data.get('username') as string;
         const password = data.get('password') as string;
-        console.log({ username, password });
-        dispatch(loginUser({ username, password }));
-    };
 
-    const validateInputs = async () => {
-        // const email = document.getElementById('email') as HTMLInputElement;
-        const password = document.getElementById('password') as HTMLInputElement;
-
-        let isValid = true;
-
-        // if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-        //     setEmailError(true);
-        //     setEmailErrorMessage('Please enter a valid email address.');
-        //     isValid = false;
-        // }
-
-        if (!password.value || password.value.length < 6) {
+        if (!password || password.length < 6) {
             setPasswordError(true);
             setPasswordErrorMessage('Password must be at least 6 characters long.');
-            isValid = false;
+            return;
+        } else {
+            setPasswordError(false);
+            setPasswordErrorMessage('');
         }
-
-        return isValid;
+        try {
+            await dispatch(loginUser({ username, password })).unwrap();
+            navigate("/"); // Chuyển hướng khi đăng nhập thành công
+          } catch (error: any) {
+            setLoginError(error);
+          }
+      
     };
 
     return (
         <>
             <CssBaseline enableColorScheme />
             <SignInContainer direction="column" justifyContent="space-between">
-                {/* <ColorModeSelect sx={{ position: "fixed", top: "1rem", right: "1rem" }} /> */}
                 <Card variant="outlined">
-                    <SitemarkIcon />
                     <Typography
                         component="h1"
                         variant="h4"
@@ -131,38 +110,16 @@ export default function Login(props: { disableCustomTheme?: boolean }) {
                             gap: 2,
                         }}
                     >
-                        {/* <FormControl>
-                            <FormLabel htmlFor="email">Email</FormLabel>
-                            <TextField
-                                error={emailError}
-                                helperText={emailErrorMessage}
-                                id="email"
-                                type="email"
-                                name="email"
-                                placeholder="your@email.com"
-                                autoComplete="email"
-                                autoFocus
-                                required
-                                fullWidth
-                                variant="outlined"
-                                color={emailError ? "error" : "primary"}
-                            />
-                        </FormControl> */}
                         <FormControl>
                             <FormLabel>Username</FormLabel>
                             <TextField
-                                // error={emailError}
-                                // helperText={emailErrorMessage}
                                 id="username"
                                 type="text"
                                 name="username"
                                 placeholder="username"
-                                // autoComplete="email"
-                                // autoFocus
                                 required
                                 fullWidth
                                 variant="outlined"
-                                // color={emailError ? "error" : "primary"}
                             />
                         </FormControl>
                         <FormControl>
@@ -175,27 +132,21 @@ export default function Login(props: { disableCustomTheme?: boolean }) {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
-                                autoFocus
                                 required
                                 fullWidth
                                 variant="outlined"
                                 color={passwordError ? 'error' : 'primary'}
                             />
                         </FormControl>
+                        {loginError && (
+                            <Typography variant="body2" color="error" sx={{ marginBottom: 2 }}>
+                                {loginError}
+                            </Typography>
+                        )}
                         <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-                        {/* <ForgotPassword open={open} handleClose={handleClose} /> */}
-                        <Button type="submit" fullWidth variant="contained" onClick={validateInputs}>
+                        <Button type="submit" fullWidth variant="contained">
                             Sign in
                         </Button>
-                        <Link
-                            component="button"
-                            type="button"
-                            onClick={handleClickOpen}
-                            variant="body2"
-                            sx={{ alignSelf: 'center' }}
-                        >
-                            Forgot your password?
-                        </Link>
                     </Box>
                     <Divider>or</Divider>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -203,7 +154,6 @@ export default function Login(props: { disableCustomTheme?: boolean }) {
                             fullWidth
                             variant="outlined"
                             onClick={() => alert('Sign in with Google')}
-                            startIcon={<GoogleIcon />}
                         >
                             Sign in with Google
                         </Button>
@@ -211,17 +161,12 @@ export default function Login(props: { disableCustomTheme?: boolean }) {
                             fullWidth
                             variant="outlined"
                             onClick={() => alert('Sign in with Facebook')}
-                            startIcon={<FacebookIcon />}
                         >
                             Sign in with Facebook
                         </Button>
                         <Typography sx={{ textAlign: 'center' }}>
                             Don&apos;t have an account?{' '}
-                            <Link
-                                href="/material-ui/getting-started/templates/sign-in/"
-                                variant="body2"
-                                sx={{ alignSelf: 'center' }}
-                            >
+                            <Link href="/auth/register" variant="body2" sx={{ alignSelf: 'center' }}>
                                 Sign up
                             </Link>
                         </Typography>

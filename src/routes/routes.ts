@@ -2,7 +2,7 @@ import React from "react";
 import Home from "../pages/Home";
 import ChatLayout from "../layouts/chat_layout";
 import Login from "../pages/Login";
-// import Register from "../pages/Register";
+import Signup from "../pages/Signup";
 
 interface RouteType {
     path: string;
@@ -15,10 +15,9 @@ const privateRoutes: RouteType[] = [
 ];
 
 const publicRoutes: RouteType[] = [
-    { path: "/", page: Login },
-    // { path: "/register", page: Register },
+    { path: "/auth/login", page: Login },
+    { path: "/auth/register", page: Signup },
 ];
 
-const adminRoutes: RouteType[] = [];
 
-export { privateRoutes, publicRoutes, adminRoutes };
+export { privateRoutes, publicRoutes };

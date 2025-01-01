@@ -15,14 +15,20 @@ const Home = () => {
     const getUserInfo = async () => {
         const accessToken = getToken();
         if (accessToken) {
-            const res = await userApi.getInfo();
-            if (res) {
-                // console.log(res);
-                dispatch(setUserInfo(res));
-                socketEmit('connection', res?.data?._id);
+            try {
+                console.log("Fetching user info...");
+                const res = await userApi.getInfo();
+                console.log("User info fetched successfully:", res);
+    
+                // Lưu thông tin người dùng vào Redux store
+                dispatch(setUserInfo(res)); // Truyền trực tiếp res thay vì res.data
+                socketEmit('connection', res._id); // Truy cập trực tiếp _id
+            } catch (error) {
+                console.error("Failed to fetch user info:", error);
             }
         }
     };
+    
 
     useEffect(() => {
         getUserInfo();
