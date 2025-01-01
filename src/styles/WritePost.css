@@ -43,7 +43,7 @@
 
 .add-post-links {
     display: flex;
-    margin-top: 10px;
+    /* margin-top: 5px; */
 }
 
 .add-post-links a {

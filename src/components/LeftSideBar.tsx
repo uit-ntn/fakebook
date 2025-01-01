@@ -1,44 +1,42 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Avatar from "@mui/material/Avatar";
-import Link from "@mui/material/Link";
-import news from "../assets/news.png";
-import friend from "../assets/friends.png";
-import group from "../assets/group.png";
-import marketplace from "../assets/marketplace.png";
-import watch from "../assets/watch.png";
-import "../styles/LeftSideBar.css";
+import { Box } from "@mui/material"
+import friend from "../assets/friends.png"
+import group from "../assets/group.png"
+import marketplace from "../assets/marketplace.png"
+import news from "../assets/news.png"
+import watch from "../assets/watch.png"
+import "../styles/LeftSideBar.css"
+import { Link } from "react-router-dom"
 
 const LeftSidebar = () => {
     return (
-        <Box className="left-sidebar" p={2}>
-            <Box className="imp-links" display="flex" flexDirection="column" gap={2}>
-                <Link href="#" display="flex" alignItems="center" color="inherit">
-                    <Avatar src={news} alt="Latest news" sx={{ width: 32, height: 32, mr: 1 }} />
-                    <Typography variant="body2">Latest news</Typography>
+        <Box className="left-sidebar">
+            <Box className="imp-links">
+                <Link to="#">
+                    <img src={news} />
+                    Latest news
                 </Link>
-                <Link href="#" display="flex" alignItems="center" color="inherit">
-                    <Avatar src={friend} alt="Friends" sx={{ width: 32, height: 32, mr: 1 }} />
-                    <Typography variant="body2">Friends</Typography>
+                <Link to="#">
+                    <img src={friend} />
+                    Friends
                 </Link>
-                <Link href="#" display="flex" alignItems="center" color="inherit">
-                    <Avatar src={group} alt="Groups" sx={{ width: 32, height: 32, mr: 1 }} />
-                    <Typography variant="body2">Groups</Typography>
+                <Link to="#">
+                    <img src={group} />
+                    Groups
                 </Link>
-                <Link href="#" display="flex" alignItems="center" color="inherit">
-                    <Avatar src={marketplace} alt="Marketplace" sx={{ width: 32, height: 32, mr: 1 }} />
-                    <Typography variant="body2">Marketplace</Typography>
+                <Link to="#">
+                    <img src={marketplace} />
+                    Marketplace
                 </Link>
-                <Link href="#" display="flex" alignItems="center" color="inherit">
-                    <Avatar src={watch} alt="Watch" sx={{ width: 32, height: 32, mr: 1 }} />
-                    <Typography variant="body2">Watch</Typography>
+                <Link to="#">
+                    <img src={watch} />
+                    Watch
                 </Link>
-                <Link href="#" color="inherit" variant="body2">
-                    See More
-                </Link>
+                <Link to="#">See More</Link>
             </Box>
+
         </Box>
-    );
-};
+    )
+
+}
 
 export default LeftSidebar;
