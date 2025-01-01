@@ -19,7 +19,7 @@ const Home = () => {
             if (res) {
                 // console.log(res);
                 dispatch(setUserInfo(res));
-                socketEmit('connection', res?._id);
+                socketEmit('connection', res?.data?._id);
             }
         }
     };
