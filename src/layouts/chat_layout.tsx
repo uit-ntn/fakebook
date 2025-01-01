@@ -1,83 +1,87 @@
-import { useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { User, Search, Phone, Video, MoreVertical, Paperclip, Send } from "lucide-react";
-import friendApi from "../services/friendServices";
-import { socketEmit, socketOff, socketOn } from "../services/socketService";
-import { useSelector } from "react-redux";
-import { userSelector } from "../redux/userSlice";
-import messageApi from "../services/messageServices";
-import dayjs from "dayjs";
+import React, { useEffect, useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { User, Search, Phone, Video, MoreVertical, Paperclip, Send } from 'lucide-react';
+import friendApi from '../services/friendServices';
+import { socketEmit, socketOff, socketOn } from '../services/socketService';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../redux/userSlice';
+import messageApi from '../services/messageServices';
+import dayjs from 'dayjs';
 
 export default function ChatPage() {
-    const [message, setMessage] = useState("");
+    const [message, setMessage] = useState('');
     const [friendList, setFriendList] = useState<any[]>([]);
     const [listMessage, setListMessage] = useState<any[]>([]);
-    const [friendSelected, setFriendSelected] = useState<string | null>(null);
+    const [friendSelected, setFriendSelected] = useState('');
+    const [showSidebar, setShowSidebar] = useState(false);
     const userInfo = useSelector(userSelector);
 
     useEffect(() => {
-        fetchFriendList();
+        getListFriend();
     }, []);
 
     useEffect(() => {
         if (friendSelected) {
-            fetchMessages();
+            getListMessage();
         }
     }, [friendSelected]);
 
     useEffect(() => {
-        socketOn("privateMessage", (data: any) => {
+        socketOn('privateMessage', (data: any) => {
             if (data) {
                 setListMessage((prevMessages) => [...prevMessages, data]);
             }
         });
 
         return () => {
-            socketOff("privateMessage");
+            socketOff('privateMessage');
         };
     }, []);
 
-    const fetchFriendList = async () => {
+    const getListFriend = async () => {
         try {
             const res = await friendApi.getList();
             if (Array.isArray(res)) {
-                const acceptedFriends = res.filter((friend: any) => friend.status === "ACCEPTED");
-                setFriendList(acceptedFriends);
-                if (acceptedFriends.length > 0) {
-                    setFriendSelected(acceptedFriends[0].friendInfo?._id || null);
+                const friendAccept = res.filter((friend: any) => friend.status === 'ACCEPTED');
+                if (friendAccept.length > 0) {
+                    setFriendSelected(friendAccept[0]?.friendInfo?._id || '');
                 }
+                setFriendList(friendAccept);
+            } else {
+                console.error('getListFriend: Response is not an array:', res);
+                setFriendList([]);
             }
         } catch (error) {
-            console.error("Failed to fetch friend list:", error);
+            console.error('Error fetching friend list:', error);
         }
     };
 
-    const fetchMessages = async () => {
+    const getListMessage = async () => {
         try {
-            if (!friendSelected) return;
             const res = await messageApi.getList(friendSelected);
             if (Array.isArray(res)) {
                 setListMessage(res);
             } else {
+                console.error('getListMessage: Response is not an array:', res);
                 setListMessage([]);
             }
         } catch (error) {
-            console.error("Failed to fetch messages:", error);
+            console.error('Error fetching message list:', error);
         }
     };
 
-    const handleSendMessage = (e: any) => {
+    const handleChat = (e: React.FormEvent) => {
         e.preventDefault();
-        if (message.trim() && friendSelected) {
-            socketEmit("private-message", {
+        if (message.trim()) {
+            socketEmit('private-message', {
                 sendId: userInfo?._id,
                 receiveId: friendSelected,
                 content: message.trim(),
             });
-            setMessage("");
+            setMessage('');
         }
     };
 
@@ -98,29 +102,23 @@ export default function ChatPage() {
                     </div>
                 </div>
                 <ScrollArea className="h-[calc(100vh-120px)]">
-                    {friendList.map((friend: any) => (
+                    {friendList.map((item) => (
                         <div
-                            key={friend.friendInfo?._id}
-                            className={`flex items-center p-3 hover:bg-gray-50 cursor-pointer ${friend.friendInfo?._id === friendSelected ? "bg-gray-100" : ""
-                                }`}
-                            onClick={() => setFriendSelected(friend.friendInfo?._id)}
+                            key={item.friendInfo?._id}
+                            className={`flex items-center p-3 hover:bg-gray-50 cursor-pointer 
+                ${item.friendInfo?._id === friendSelected ? 'bg-gray-100' : ''}`}
+                            onClick={() => setFriendSelected(item.friendInfo?._id)}
                         >
                             <Avatar className="h-12 w-12">
-                                <AvatarImage src={`https://i.pravatar.cc/100?u=${friend.friendInfo?._id}`} />
-                                <AvatarFallback>
-                                    {friend.friendInfo?.username?.charAt(0)}
-                                </AvatarFallback>
+                                <AvatarImage src={`https://i.pravatar.cc/100?u=${item.friendInfo?._id}`} />
+                                <AvatarFallback>{item.friendInfo?.username?.charAt(0)}</AvatarFallback>
                             </Avatar>
                             <div className="ml-3 flex-1">
                                 <div className="flex justify-between items-baseline">
-                                    <h3 className="text-sm font-semibold text-gray-800">
-                                        {friend.friendInfo?.username}
-                                    </h3>
-                                    <span className="text-xs text-gray-500">{friend.friendInfo?.time}</span>
+                                    <h3 className="text-sm font-semibold text-gray-800">{item.friendInfo?.username}</h3>
+                                    <span className="text-xs text-gray-500">{item.time}</span>
                                 </div>
-                                <p className="text-sm text-gray-600 truncate">
-                                    {friend.recentMessage?.content}
-                                </p>
+                                <p className="text-sm text-gray-600 truncate">{item.recentMessage?.content}</p>
                             </div>
                         </div>
                     ))}
@@ -128,23 +126,20 @@ export default function ChatPage() {
             </div>
 
             {/* Main Chat Area */}
-            <div className="flex-1 flex flex-col">
+            <div className={`flex-1 flex flex-col ${showSidebar ? 'mr-64' : ''}`}>
                 {/* Chat Header */}
                 <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
                     <div className="flex items-center">
                         <Avatar className="h-10 w-10">
-                            <AvatarImage src={`https://scontent.fhan3-3.fna.fbcdn.net/v/t1.6435-9/116264906_340041997020888_6356968955999431305_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=l0F7ei2XgSUQ7kNvgE7nL9r&_nc_oc=AdhWVUAryqNigH2gkhk9T-FpPACAjT_LeLoWq8QUX6lfVuRa-AZFWigfAu3T4lV7gy0&_nc_zt=23&_nc_ht=scontent.fhan3-3.fna&_nc_gid=A14eDjStwNxG4ijzNxTaR3C&oh=00_AYBlw3L35bndiBbdQJsTQuHrHWcGjLNesmgVgYF3pQqDaQ&oe=679C790F`} />
-                            <AvatarFallback>
-                                {friendList.find((f) => f.friendInfo?._id === friendSelected)?.friendInfo?.username?.charAt(0)}
-                            </AvatarFallback>
+                            <AvatarImage src={`https://scontent.fsgn5-14.fna.fbcdn.net/v/t1.6435-9/116264906_340041997020888_6356968955999431305_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=l0F7ei2XgSUQ7kNvgEJ6RII&_nc_zt=23&_nc_ht=scontent.fsgn5-14.fna&_nc_gid=AhRmFTnWzj4OxH8aERAvFmR&oh=00_AYB9NLdKGWPjjd_maQy3fIr6G1i7yLbUeQ38eRDk-pip9w&oe=679C790F`} />
+                            <AvatarFallback>{friendList.find((f) => f.friendInfo?._id === friendSelected)?.friendInfo?.username?.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="ml-3">
                             <h3 className="text-lg font-semibold text-gray-800">
-                                {friendList.find((f) => f.friendInfo?._id === friendSelected)?.friendInfo?.username}
+                                <p className="text-sm text-gray-500">
+                                    {userInfo?.username}
+                                </p>
                             </h3>
-                            <p className="text-sm text-gray-500">
-                                {userInfo?.username}
-                            </p>
                         </div>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -154,34 +149,27 @@ export default function ChatPage() {
                         <Button variant="ghost" size="icon">
                             <Video className="h-5 w-5 text-blue-500" />
                         </Button>
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" onClick={() => setShowSidebar(!showSidebar)}>
                             <MoreVertical className="h-5 w-5 text-gray-500" />
                         </Button>
                     </div>
                 </div>
 
-
                 {/* Messages */}
                 <ScrollArea className="flex-1 bg-gray-50">
                     <div className="space-y-4 px-4 py-3">
-                        {listMessage.map((msg: any) => (
+                        {listMessage.map((msg, index) => (
                             <div
-                                key={msg._id}
-                                className={`flex ${userInfo?._id === msg.sendId ? "justify-end" : "justify-start"
-                                    }`}
+                                key={index}
+                                className={`flex ${userInfo?._id === msg.sendId ? 'justify-end' : 'justify-start'}`}
                             >
                                 <div
-                                    className={`max-w-[60%] ${userInfo?._id === msg.sendId
-                                        ? "bg-blue-500 text-white"
-                                        : "bg-white"
+                                    className={`max-w-[60%] ${userInfo?._id === msg.sendId ? 'bg-blue-500 text-white' : 'bg-white'
                                         } rounded-lg py-2 px-3 shadow`}
                                 >
                                     <p className="text-sm">{msg.content}</p>
-                                    <span
-                                        className={`text-xs ${userInfo?._id === msg.sendId ? "text-white" : "text-gray-400"
-                                            } mt-1 block`}
-                                    >
-                                        {dayjs(msg.createdAt).format("hh:mm A")}
+                                    <span className="text-xs mt-1 block text-gray-400">
+                                        {dayjs(msg.createdAt).format('hh:mm A')}
                                     </span>
                                 </div>
                             </div>
@@ -202,12 +190,33 @@ export default function ChatPage() {
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                         />
-                        <Button size="icon" onClick={handleSendMessage}>
+                        <Button size="icon" onClick={handleChat}>
                             <Send className="h-5 w-5" />
                         </Button>
                     </div>
                 </div>
             </div>
+
+            {/* Right Sidebar */}
+            {showSidebar && (
+                <div className="w-64 bg-gray-100 border-l border-gray-200 fixed right-0 top-0 h-screen p-4">
+                    <div className="flex flex-col items-center">
+                        <Avatar className="h-20 w-20 mb-4">
+                            <AvatarImage src={`https://i.pravatar.cc/100?u=${friendSelected}`} />
+                            <AvatarFallback>{friendList.find((f) => f.friendInfo?._id === friendSelected)?.friendInfo?.username?.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                            <p className="text-sm text-gray-500">
+                                {userInfo?.username}
+                            </p>
+                        </h3>
+                        <p className="text-sm text-gray-500 mb-4">Active now</p>
+                        <Button variant="outline" className="w-full mb-2">Chat Info</Button>
+                        <Button variant="outline" className="w-full mb-2">Customize Chat</Button>
+                        <Button variant="outline" className="w-full">Privacy & Support</Button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
