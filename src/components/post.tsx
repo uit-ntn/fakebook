@@ -1,7 +1,7 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/avatar';
+import { Button } from '@/components/button';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/card';
+import { Input } from '@/components/input';
 import { Camera, GiftIcon as Gif, Image, MoreHorizontal, Share2, Smile, Sticker } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

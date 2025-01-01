@@ -1,4 +1,4 @@
-import { Header } from '@/components/header-new';
+import { Header } from '@/components/Header';
 import { Post } from '@/components/post';
 import { FriendRecommendations } from '@/components/friend-recommendations';
 import { StatusUpdateForm } from '@/components/status-update-form';

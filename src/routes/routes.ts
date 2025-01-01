@@ -1,6 +1,6 @@
 import React from "react";
 import Home from "../pages/Home";
-import ChatLayout from "../layouts/chat_layout";
+import Chat from "../pages/Chat";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 
@@ -11,7 +11,7 @@ interface RouteType {
 
 const privateRoutes: RouteType[] = [
     { path: "/", page: Home },
-    { path: "/chat", page: ChatLayout },
+    { path: "/chat", page: Chat },
 ];
 
 const publicRoutes: RouteType[] = [

@@ -1,7 +1,7 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/avatar';
+import { Button } from '@/components/button';
+import { Card, CardContent, CardFooter } from '@/components/card';
+import { Input } from '@/components/input';
 import { Image, Smile, Video } from 'lucide-react';
 
 export function StatusUpdateForm() {
