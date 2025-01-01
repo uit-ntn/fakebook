@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Bell, Home, Menu, MessageCircle, Search, User } from 'lucide-react';
 import { Button } from '@/components/button';
 import { Input } from '@/components/input';
+import { DropdownMenu } from './drop-down-menu';
 import { useNavigate } from 'react-router-dom';
 
 export function Header() {
@@ -10,6 +11,12 @@ export function Header() {
 
     const toggleDropdown = () => {
         setDropdownOpen((prev) => !prev);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        navigate('/auth/login');
     };
 
     return (
@@ -26,7 +33,7 @@ export function Header() {
                         <Input
                             type="search"
                             placeholder="Search Facebook"
-                            className="w-[200px] border-0 bg-transparent p-0 focus-visible:ring-0"
+                            className="w-[200px] border-0 bg-transparent p-3 focus-visible:ring-0"
                         />
                     </div>
                 </div>
@@ -52,28 +59,7 @@ export function Header() {
                         <Button variant="ghost" size="icon" onClick={toggleDropdown}>
                             <User className="h-5 w-5" />
                         </Button>
-                        {dropdownOpen && (
-                            <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-md z-50">
-                                <a
-                                    href="/profile"
-                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                >
-                                    Trang cá nhân
-                                </a>
-                                <a
-                                    href="/settings"
-                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                >
-                                    Cài đặt
-                                </a>
-                                <button
-                                    onClick={() => console.log('Đăng xuất')}
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                >
-                                    Đăng xuất
-                                </button>
-                            </div>
-                        )}
+                        {dropdownOpen && <DropdownMenu onLogout={handleLogout} />}
                     </div>
                 </div>
             </div>
