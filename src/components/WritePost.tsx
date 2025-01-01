@@ -45,3 +45,4 @@ const WritePost = () => {
 };
 
 export default WritePost;
+

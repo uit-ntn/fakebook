@@ -30,7 +30,7 @@ const StoryItem = () => {
                 <Typography>John</Typography>
             </Box>
         </>
-    )
-}
+    );
+};
 
 export default StoryItem;
