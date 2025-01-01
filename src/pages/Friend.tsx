@@ -1,5 +1,5 @@
 import React from "react";
-import { Header } from "@/components/header";
+import { Header } from "@/components/heading";
 import { FriendLeftSidebar } from "@/components/friend-sidebar";
 import FriendRequests from "@/components/friend-requests";
 
