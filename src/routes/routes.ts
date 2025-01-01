@@ -1,8 +1,9 @@
 import React from "react";
 import Home from "../pages/Home";
-import ChatLayout from "../layouts/chat_layout";
+import Chat from "../pages/Chat";
 import Login from "../pages/Login";
-// import Register from "../pages/Register";
+import Signup from "../pages/Signup";
+import Friends from "@/pages/Friend";
 
 interface RouteType {
     path: string;
@@ -11,14 +12,14 @@ interface RouteType {
 
 const privateRoutes: RouteType[] = [
     { path: "/", page: Home },
-    { path: "/chat", page: ChatLayout },
+    { path: "/chat", page: Chat },
+    {path : "/friends", page : Friends}
 ];
 
 const publicRoutes: RouteType[] = [
-    { path: "/", page: Login },
-    // { path: "/register", page: Register },
+    { path: "/auth/login", page: Login },
+    { path: "/auth/register", page: Signup },
 ];
 
-const adminRoutes: RouteType[] = [];
 
-export { privateRoutes, publicRoutes, adminRoutes };
+export { privateRoutes, publicRoutes };

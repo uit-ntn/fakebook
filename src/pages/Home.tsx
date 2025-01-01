@@ -1,6 +1,6 @@
-import { Header } from '@/components/header-new';
+import { Header } from '@/components/header';
 import { Post } from '@/components/post';
-import { FriendRecommendations } from '@/components/friend-recommendations';
+import { LeftSidebar } from '@/components/left-sidebar';
 import { StatusUpdateForm } from '@/components/status-update-form';
 import { useEffect, useState } from 'react';
 import { socketEmit } from '../services/socketService';
@@ -8,27 +8,33 @@ import userApi from '../services/authServices';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserInfo } from '../redux/userSlice';
 import { getToken } from '../utils/localStorage';
+import { RightSidebar } from '@/components/right-sidebar';
+
+const FriendSidebar = ({ friends }) => {
+    return (
+        <div className="sticky top-16 bg-white shadow-md rounded-md p-4 max-h-[80vh] overflow-y-auto">
+            <h2 className="text-lg font-semibold mb-4">Liên hệ</h2>
+            {friends.map((friend, index) => (
+                <div key={index} className="flex items-center mb-3">
+                    <img
+                        src={`https://i.pravatar.cc/40?u=${friend.id}`}
+                        alt={friend.name}
+                        className="w-10 h-10 rounded-full border border-gray-300 mr-3"
+                    />
+                    <div className="text-sm">
+                        <p className="font-medium">{friend.name}</p>
+                        <span className="text-green-500 text-xs">● Online</span>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
 
 const Home = () => {
     const dispatch = useDispatch();
-
-    const getUserInfo = async () => {
-        const accessToken = getToken();
-        if (accessToken) {
-            const res = await userApi.getInfo();
-            if (res) {
-                // console.log(res);
-                dispatch(setUserInfo(res));
-                socketEmit('connection', res?.data?._id);
-            }
-        }
-    };
-
-    useEffect(() => {
-        getUserInfo();
-    }, []);
-
-    const posts = [
+    const [friends, setFriends] = useState<{ id: number; name: string }[]>([]);
+    const [posts, setPosts] = useState([
         {
             userName: 'John Doe',
             date: 'October 11',
@@ -54,24 +60,64 @@ const Home = () => {
             ],
             shares: 8,
         },
-    ];
+    ]);
+
+    const getUserInfo = async () => {
+        const accessToken = getToken();
+        if (accessToken) {
+            try {
+                const res = await userApi.getInfo();
+                dispatch(setUserInfo(res));
+                socketEmit('connection', res._id);
+            } catch (error) {
+                console.error("Failed to fetch user info:", error);
+            }
+        }
+    };
+
+    const getFriends = async () => {
+        // Mock danh sách bạn bè
+        const mockFriends = [
+            { id: 1, name: 'Trần Phúc' },
+            { id: 2, name: 'Thanh Tính' },
+            { id: 3, name: 'Huỳnh Phú' },
+            { id: 4, name: 'Huỳnh Tỷ' },
+            { id: 5, name: 'Kim Lê' },
+            { id: 6, name: 'Nguyễn Minh Duy' },
+            { id: 7, name: 'Tuấn Anh' },
+            { id: 8, name: 'Kay Nguyễn' },
+            { id: 9, name: 'Nguyễn Tấn Thành' },
+            { id: 10, name: 'Kim Chi' },
+            { id: 11, name: 'Trúc Quỳnh' },
+        ];
+        setFriends(mockFriends);
+    };
+
+    useEffect(() => {
+        getUserInfo();
+        getFriends();
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-100">
             <Header />
             <main className="container mx-auto py-4 px-4">
-                <div className="flex justify-center gap-4">
-                    <div className="w-screen max-w-3xl">
+                <div className="flex justify-between gap-4">
+                    {/* Left Sidebar */}
+                    <LeftSidebar />
+
+
+                    {/* Main Content */}
+                    <div className="flex-1 max-w-3xl">
                         <StatusUpdateForm />
                         {posts.map((post, index) => (
                             <Post key={index} {...post} />
                         ))}
                     </div>
-                    <div className="hidden lg:block w-80">
-                        <div className="sticky top-16">
-                            <FriendRecommendations />
-                        </div>
-                    </div>
+
+                    {/* Right Sidebar */}
+                    <RightSidebar friends={friends} />
+
                 </div>
             </main>
         </div>

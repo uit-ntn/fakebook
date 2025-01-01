@@ -1,25 +1,40 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import _ from 'lodash'
-import { setRefreshToken, setToken } from '../utils/localStorage'
-import userApi, { LoginData } from '../services/authServices'
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import userApi, { LoginData, RegisterData } from "../services/authServices";
+import { setToken, setRefreshToken } from "../utils/localStorage";
 
-
-// Thunk will call API login và save token into localStorage
+// Login Thunk
 export const loginUser = createAsyncThunk<void, LoginData>(
-  'user/loginUser',
+  "user/loginUser",
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await userApi.login(data);
+      const { accessToken, refreshToken } = res;
 
-  //data is LoginData (chứa username, password)
-  async (data) => {
-    console.log('loginUSERRRRR')
+      if (!accessToken || !refreshToken) {
+        throw new Error("Access token or refresh token is missing.");
+      }
 
-    // userApi.login(data) return AxiosResponse
-    // => token nằm trong res.data
-    const res = await userApi.login(data)
+      setToken(accessToken);
+      setRefreshToken(refreshToken);
 
-    if (!_.isEmpty(res.data.accessToken)) {
-      setToken(res.data.accessToken)
-      setRefreshToken(res.data.refreshToken)
-      window.location.reload()
+      console.log("Login successful.");
+    } catch (error: any) {
+      console.error("Login failed:", error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
-)
+);
+
+// Register Thunk
+export const registerUser = createAsyncThunk<void, RegisterData>(
+  "user/registerUser",
+  async (data, { rejectWithValue }) => {
+    try {
+      await userApi.register(data);
+      console.log("Registration successful.");
+    } catch (error: any) {
+      console.error("Registration failed:", error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
