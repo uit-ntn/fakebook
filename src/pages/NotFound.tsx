@@ -30,7 +30,7 @@ export default function NotFound() {
   return (
     <NotFoundContainer>
       <NotFoundImage
-        src="https://via.placeholder.com/400x300?text=404+Page+Not+Found"
+        src="https://admiral.digital/wp-content/uploads/2023/08/404_page-not-found.png"
         alt="404 Not Found"
       />
       <Typography variant="h3" component="h1" gutterBottom>

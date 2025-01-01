@@ -1,4 +1,4 @@
-import { Header } from '@/components/Header';
+import { Header } from '@/components/header';
 import { Post } from '@/components/post';
 import { LeftSidebar } from '@/components/left-sidebar';
 import { StatusUpdateForm } from '@/components/status-update-form';

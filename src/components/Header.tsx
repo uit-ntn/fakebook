@@ -3,7 +3,7 @@ import { Bell, Home, Menu, MessageCircle, Search, User } from 'lucide-react';
 import { Button } from '@/components/button';
 import { Input } from '@/components/input';
 import { DropdownMenu } from './drop-down-menu';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function Header() {
     const navigate = useNavigate();
@@ -27,12 +27,12 @@ export function Header() {
                     <Button variant="ghost" size="icon">
                         <Menu className="h-5 w-5" />
                     </Button>
-                    <h1 className="text-2xl font-bold text-blue-600">facebook</h1>
+                    <Link to= "/" className="text-2xl font-bold text-blue-600">FakeBook</Link>
                     <div className="hidden sm:flex items-center space-x-2 rounded-full bg-muted px-3 py-1">
                         <Search className="h-4 w-4 text-muted-foreground" />
                         <Input
                             type="search"
-                            placeholder="Search Facebook"
+                            placeholder="Search FakeBook"
                             className="w-[200px] border-0 bg-transparent p-3 focus-visible:ring-0"
                         />
                     </div>
