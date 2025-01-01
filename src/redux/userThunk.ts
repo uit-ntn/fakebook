@@ -1,14 +1,25 @@
-import userApi from '../services/authServices';
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { setRefreshToken, setToken } from '../utils/localStorage';
-import _ from 'lodash';
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import _ from 'lodash'
+import { setRefreshToken, setToken } from '../utils/localStorage'
+import userApi, { LoginData } from '../services/authServices'
 
-export const loginUser = createAsyncThunk('user/loginUser', async (data) => {
-    console.log('loginUSERRRRR');
-    const res = await userApi.login(data);
-    if (!_.isEmpty(res.accessToken)) {
-        setToken(res.accessToken);
-        setRefreshToken(res.refreshToken);
-        window.location.reload();
+
+// Thunk will call API login và save token into localStorage
+export const loginUser = createAsyncThunk<void, LoginData>(
+  'user/loginUser',
+
+  //data is LoginData (chứa username, password)
+  async (data) => {
+    console.log('loginUSERRRRR')
+
+    // userApi.login(data) return AxiosResponse
+    // => token nằm trong res.data
+    const res = await userApi.login(data)
+
+    if (!_.isEmpty(res.data.accessToken)) {
+      setToken(res.data.accessToken)
+      setRefreshToken(res.data.refreshToken)
+      window.location.reload()
     }
-});
+  }
+)

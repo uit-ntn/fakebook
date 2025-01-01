@@ -1,15 +1,15 @@
 import AxiosClient from "./axiosClient";
 
-interface LoginData {
+export interface LoginData {
     username: string;
     password: string;
 }
 
-interface RegisterData extends LoginData {
+export interface RegisterData extends LoginData {
     username: string;
 }
 
-interface RefreshTokenData {
+export interface RefreshTokenData {
     refreshToken: string;
 }
 
