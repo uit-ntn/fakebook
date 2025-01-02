@@ -27,7 +27,7 @@ export function Header() {
                     <Button variant="ghost" size="icon">
                         <Menu className="h-5 w-5" />
                     </Button>
-                    <Link to= "/" className="text-2xl font-bold text-blue-600">FakeBook</Link>
+                    <Link to="/" className="text-2xl font-bold text-blue-600">FakeBook</Link>
                     <div className="hidden sm:flex items-center space-x-2 rounded-full bg-muted px-3 py-1">
                         <Search className="h-4 w-4 text-muted-foreground" />
                         <Input
@@ -40,7 +40,9 @@ export function Header() {
 
                 {/* Right Section */}
                 <div className="flex items-center ml-auto space-x-4">
-                    <Button variant="ghost" size="icon" className="hidden md:flex">
+                    <Button variant="ghost" size="icon" className="hidden md:flex" onClick={() => {
+                        navigate('/');
+                    }}>
                         <Home className="h-5 w-5" />
                     </Button>
                     <Button

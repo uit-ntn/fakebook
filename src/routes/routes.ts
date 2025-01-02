@@ -4,6 +4,8 @@ import Chat from "../pages/Chat";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Friends from "@/pages/Friend";
+import Profile from "@/pages/Profile";
+
 
 interface RouteType {
     path: string;
@@ -13,7 +15,8 @@ interface RouteType {
 const privateRoutes: RouteType[] = [
     { path: "/", page: Home },
     { path: "/chat", page: Chat },
-    {path : "/friends", page : Friends}
+    {path : "/friends", page : Friends},
+    {path : "/profile", page : Profile}
 ];
 
 const publicRoutes: RouteType[] = [

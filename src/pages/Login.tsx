@@ -157,13 +157,6 @@ export default function Login() {
                         >
                             Sign in with Google
                         </Button>
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            onClick={() => alert('Sign in with Facebook')}
-                        >
-                            Sign in with Facebook
-                        </Button>
                         <Typography sx={{ textAlign: 'center' }}>
                             Don&apos;t have an account?{' '}
                             <Link href="/auth/register" variant="body2" sx={{ alignSelf: 'center' }}>
