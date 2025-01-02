@@ -57,9 +57,6 @@ export function Post({ userName, date, content, imageUrl, likes, comments, share
                             <div className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-[10px] text-white">
                                 👍
                             </div>
-                            <div className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
-                                ❤️
-                            </div>
                         </div>
                         <span>{likes}</span>
                     </div>
@@ -75,21 +72,24 @@ export function Post({ userName, date, content, imageUrl, likes, comments, share
                         Like
                     </Button>
                     <Button variant="ghost" className="flex-1">
-                        Comment
+                        Bình luận
                     </Button>
                     <Button variant="ghost" className="flex-1">
                         <Share2 className="mr-2 h-4 w-4" />
-                        Share
+                        Chia sẻ
                     </Button>
                 </div>
                 {comments.map((comment, index) => (
-                    <div key={index} className="flex w-full items-start space-x-2 px-4 py-2">
-                        <Avatar className="h-8 w-8">
+                    <div
+                        key={index}
+                        className="flex w-full items-start space-x-2 px-4 py-2 mb-2 mx-2"
+                    >
+                        <Avatar className="h-12 w-12 border rounded-full">
                             <AvatarImage src="/placeholder.svg" />
                             <AvatarFallback>{comment.userName.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="flex-1">
-                            <div className="bg-muted rounded-lg px-3 py-2">
+                            <div className="bg-white rounded-lg px-3 py-2 shadow-md">
                                 <p className="font-semibold">{comment.userName}</p>
                                 <p>{comment.content}</p>
                             </div>
@@ -108,15 +108,12 @@ export function Post({ userName, date, content, imageUrl, likes, comments, share
                     </Avatar>
                     <div className="flex-1 flex items-center gap-2 rounded-full bg-muted px-4 py-2">
                         <Input
-                            className="border-0 bg-transparent p-0 focus-visible:ring-0"
+                            className="border bg-transparent p-0 focus-visible:ring-0 p-2 h-8"
                             placeholder="Write a comment..."
                         />
                         <div className="flex gap-2">
                             <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
                                 <Camera className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
-                                <Gif className="h-4 w-4" />
                             </Button>
                             <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
                                 <Sticker className="h-4 w-4" />
