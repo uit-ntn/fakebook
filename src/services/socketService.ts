@@ -1,8 +1,10 @@
 import { Socket, io } from 'socket.io-client';
 import { API_ENDPOINT } from '../utils/endpoints';
 
-export const socket: Socket = io(`${API_ENDPOINT}/chat`, {
-    transports: ['websocket', 'polling'],
+export const SOCKET_ENDPOINT = 'http://localhost:5000';
+
+export const socket: Socket = io(`${SOCKET_ENDPOINT}/chat`, {
+    transports: ['websocket'],
     reconnection: true,
 });
 

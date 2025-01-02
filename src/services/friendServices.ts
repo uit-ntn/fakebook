@@ -1,10 +1,19 @@
-import AxiosClient from "./axiosClient";
+import AxiosClient from './axiosClient';
 
-const API_ENDPOINT = "friend";
+const API_ENDPOINT = 'friend';
 
 const friendApi = {
-    getList: () => {
-        return AxiosClient.get(API_ENDPOINT + "/list");
+    getListFriend: () => {
+        return AxiosClient.get(API_ENDPOINT + '/list');
+    },
+    addFriend: (userId: string) => {
+        return AxiosClient.post(API_ENDPOINT + `/add-friend`, {}, { params: { friendId: userId } });
+    },
+    acceptFriend: (userId: string) => {
+        return AxiosClient.post(API_ENDPOINT + `/accept-friend`, {}, { params: { friendId: userId } });
+    },
+    getFriendRequests: () => {
+        return AxiosClient.get(API_ENDPOINT + '/pending-requests');
     },
 };
 

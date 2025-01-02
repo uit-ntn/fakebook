@@ -3,10 +3,10 @@ import { Post } from '@/components/post';
 import { LeftSidebar } from '@/components/left-sidebar';
 import { StatusUpdateForm } from '@/components/status-update-form';
 import { useEffect, useState } from 'react';
-import { socketEmit } from '../services/socketService';
+import { socket, socketEmit, socketOff } from '../services/socketService';
 import userApi from '../services/authServices';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserInfo } from '../redux/userSlice';
+import { setUserInfo, userSelector } from '../redux/userSlice';
 import { getToken } from '../utils/localStorage';
 import { RightSidebar } from '@/components/right-sidebar';
 
@@ -33,7 +33,8 @@ const FriendSidebar = ({ friends }) => {
 
 const Home = () => {
     const dispatch = useDispatch();
-    const [friends, setFriends] = useState<{ id: number; name: string }[]>([]);
+    const userInfo = useSelector(userSelector);
+    const [friends, setFriends] = useState<any[]>([]);
     const [posts, setPosts] = useState([
         {
             userName: 'John Doe',
@@ -70,32 +71,37 @@ const Home = () => {
                 dispatch(setUserInfo(res));
                 socketEmit('connection', res._id);
             } catch (error) {
-                console.error("Failed to fetch user info:", error);
+                console.error('Failed to fetch user info:', error);
             }
         }
     };
 
     const getFriends = async () => {
-        // Mock danh sách bạn bè
-        const mockFriends = [
-            { id: 1, name: 'Trần Phúc' },
-            { id: 2, name: 'Thanh Tính' },
-            { id: 3, name: 'Huỳnh Phú' },
-            { id: 4, name: 'Huỳnh Tỷ' },
-            { id: 5, name: 'Kim Lê' },
-            { id: 6, name: 'Nguyễn Minh Duy' },
-            { id: 7, name: 'Tuấn Anh' },
-            { id: 8, name: 'Kay Nguyễn' },
-            { id: 9, name: 'Nguyễn Tấn Thành' },
-            { id: 10, name: 'Kim Chi' },
-            { id: 11, name: 'Trúc Quỳnh' },
-        ];
-        setFriends(mockFriends);
+        // // Mock danh sách bạn bè
+        // const mockFriends = [
+        //     { id: 1, name: 'Trần Phúc' },
+        //     { id: 2, name: 'Thanh Tính' },
+        //     { id: 3, name: 'Huỳnh Phú' },
+        //     { id: 4, name: 'Huỳnh Tỷ' },
+        //     { id: 5, name: 'Kim Lê' },
+        //     { id: 6, name: 'Nguyễn Minh Duy' },
+        //     { id: 7, name: 'Tuấn Anh' },
+        //     { id: 8, name: 'Kay Nguyễn' },
+        //     { id: 9, name: 'Nguyễn Tấn Thành' },
+        //     { id: 10, name: 'Kim Chi' },
+        //     { id: 11, name: 'Trúc Quỳnh' },
+        // ];
+        // setFriends(mockFriends);
+        userApi.getListUsers().then((res) => {
+            // console.log(res);
+            setFriends(res);
+        });
     };
 
     useEffect(() => {
         getUserInfo();
         getFriends();
+        socketEmit('connection', userInfo?._id);
     }, []);
 
     return (
@@ -105,7 +111,6 @@ const Home = () => {
                 <div className="flex justify-between gap-4">
                     {/* Left Sidebar */}
                     <LeftSidebar />
-
 
                     {/* Main Content */}
                     <div className="flex-1 max-w-3xl">
@@ -117,7 +122,6 @@ const Home = () => {
 
                     {/* Right Sidebar */}
                     <RightSidebar friends={friends} />
-
                 </div>
             </main>
         </div>

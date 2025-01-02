@@ -4,6 +4,7 @@ import { Button } from '@/components/button';
 import { Input } from '@/components/input';
 import { DropdownMenu } from './drop-down-menu';
 import { Link, useNavigate } from 'react-router-dom';
+import { removeTokens } from '@/utils/localStorage';
 
 export function Header() {
     const navigate = useNavigate();
@@ -14,9 +15,8 @@ export function Header() {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        navigate('/auth/login');
+        removeTokens();
+        window.location.reload();
     };
 
     return (
@@ -27,7 +27,9 @@ export function Header() {
                     <Button variant="ghost" size="icon">
                         <Menu className="h-5 w-5" />
                     </Button>
-                    <Link to="/" className="text-2xl font-bold text-blue-600">FakeBook</Link>
+                    <Link to="/" className="text-2xl font-bold text-blue-600">
+                        FakeBook
+                    </Link>
                     <div className="hidden sm:flex items-center space-x-2 rounded-full bg-muted px-3 py-1">
                         <Search className="h-4 w-4 text-muted-foreground" />
                         <Input
@@ -40,16 +42,21 @@ export function Header() {
 
                 {/* Right Section */}
                 <div className="flex items-center ml-auto space-x-4">
-                    <Button variant="ghost" size="icon" className="hidden md:flex" onClick={() => {
-                        navigate('/');
-                    }}>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="hidden md:flex"
+                        onClick={() => {
+                            navigate('/');
+                        }}
+                    >
                         <Home className="h-5 w-5" />
                     </Button>
                     <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => {
-                            navigate('chat');
+                            navigate('/chat');
                         }}
                     >
                         <MessageCircle className="h-5 w-5" />

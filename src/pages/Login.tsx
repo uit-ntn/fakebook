@@ -80,11 +80,10 @@ export default function Login() {
         }
         try {
             await dispatch(loginUser({ username, password })).unwrap();
-            navigate("/"); // Chuyển hướng khi đăng nhập thành công
-          } catch (error: any) {
+            window.location.reload();
+        } catch (error: any) {
             setLoginError(error);
-          }
-      
+        }
     };
 
     return (
@@ -150,16 +149,12 @@ export default function Login() {
                     </Box>
                     <Divider>or</Divider>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            onClick={() => alert('Sign in with Google')}
-                        >
+                        <Button fullWidth variant="outlined" onClick={() => alert('Sign in with Google')}>
                             Sign in with Google
                         </Button>
                         <Typography sx={{ textAlign: 'center' }}>
                             Don&apos;t have an account?{' '}
-                            <Link href="/auth/register" variant="body2" sx={{ alignSelf: 'center' }}>
+                            <Link href="/register" variant="body2" sx={{ alignSelf: 'center' }}>
                                 Sign up
                             </Link>
                         </Typography>
