@@ -15,16 +15,31 @@ function App() {
     return (
         <Router>
             <Routes>
-                {/* Render either private or public routes based on token validity */}
-                {isValidToken
-                    ? privateRoutes.map((route, index) => {
-                          const Page = route.page;
-                          return <Route key={index} path={route.path} element={<Page />} />;
-                      })
-                    : publicRoutes.map((route, index) => {
-                          const Page = route.page;
-                          return <Route key={index} path={route.path} element={<Page />} />;
-                      })}
+                {/* Public routes */}
+                {publicRoutes.map((route, index) => {
+                    const Page = route.page;
+                    return <Route key={index} path={route.path} element={<Page />} />;
+                })}
+
+                {/* Private routes */}
+                {privateRoutes.map((route, index) => {
+                    const Page = route.page;
+                    return (
+                        <Route
+                            key={index}
+                            path={route.path}
+                            element={
+                                isValidToken ? (
+                                    <Page />
+                                ) : (
+                                    <Navigate to="/login" replace />
+                                )
+                            }
+                        />
+                    );
+                })}
+
+                {/* Not Found route */}
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>
