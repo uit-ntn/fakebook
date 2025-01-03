@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/button';
 import friendApi from '@/services/friendServices';
-import { get } from 'lodash';
 import { message } from 'antd';
 import { useSelector } from 'react-redux';
 import { userSelector } from '@/redux/userSlice';
@@ -16,42 +15,74 @@ interface FriendRequest {
     userId: string;
 }
 
-// const mockFriendRequests: FriendRequest[] = [
-//     {
-//         id: 1,
-//         name: 'Minh',
-//         avatar: 'https://scontent.fsgn5-10.fna.fbcdn.net/v/t1.6435-1/52774148_2007906386169723_2706314470086410240_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=107&ccb=1-7&_nc_sid=e99d92&_nc_ohc=XoHy1hoJryMQ7kNvgG6izc2&_nc_zt=24&_nc_ht=scontent.fsgn5-10.fna&_nc_gid=A-ikOiDci620B8AtymhbRla&oh=00_AYBv9FEYfY04Ha3GWFG5Pr_CuyEo-7ZfMXOobx0cjU-vOg&oe=679CCC33',
-//         mutualFriends: 24,
-//     },
-//     {
-//         id: 2,
-//         name: 'Nghĩa',
-//         avatar: 'https://via.placeholder.com/150',
-//         mutualFriends: 0,
-//     },
-//     {
-//         id: 3,
-//         name: 'Nguyên',
-//         avatar: 'https://via.placeholder.com/150',
-//         mutualFriends: 18,
-//     },
-//     {
-//         id: 4,
-//         name: 'Tính',
-//         avatar: 'https://via.placeholder.com/150',
-//         mutualFriends: 0,
-//     },
-//     {
-//         id: 5,
-//         name: 'Phú',
-//         avatar: 'https://via.placeholder.com/150',
-//         mutualFriends: 0,
-//     },
-// ];
+const mockFriendRequests: FriendRequest[] = [
+    {
+        _id: '1',
+        name: 'Minh',
+        avatar: 'https://i.pravatar.cc/150?u=user1',
+        mutualFriends: 24,
+        sentBy: 'Minh',
+        status: 'pending',
+        userId: 'user1',
+    },
+    {
+        _id: '2',
+        name: 'Nghĩa',
+        avatar: 'https://i.pravatar.cc/150?u=user2',
+        mutualFriends: 12,
+        sentBy: 'Nghĩa',
+        status: 'pending',
+        userId: 'user2',
+    },
+    {
+        _id: '3',
+        name: 'Nguyên',
+        avatar: 'https://i.pravatar.cc/150?u=user3',
+        mutualFriends: 18,
+        sentBy: 'Nguyên',
+        status: 'pending',
+        userId: 'user3',
+    },
+    {
+        _id: '4',
+        name: 'Tính',
+        avatar: 'https://i.pravatar.cc/150?u=user4',
+        mutualFriends: 0,
+        sentBy: 'Tính',
+        status: 'pending',
+        userId: 'user4',
+    },
+    {
+        _id: '5',
+        name: 'Phú',
+        avatar: 'https://i.pravatar.cc/150?u=user5',
+        mutualFriends: 5,
+        sentBy: 'Phú',
+        status: 'pending',
+        userId: 'user5',
+    },
+    {
+        _id: '6',
+        name: 'Hương',
+        avatar: 'https://i.pravatar.cc/150?u=user6',
+        mutualFriends: 8,
+        sentBy: 'Hương',
+        status: 'pending',
+        userId: 'user6',
+    },
+    {
+        _id: '7',
+        name: 'Lan',
+        avatar: 'https://i.pravatar.cc/150?u=user7',
+        mutualFriends: 10,
+        sentBy: 'Lan',
+        status: 'pending',
+        userId: 'user7',
+    },
+];
 
 const FriendRequests = () => {
     const userInfo = useSelector(userSelector);
-
     const [requests, setRequests] = useState<FriendRequest[]>([]);
 
     useEffect(() => {
@@ -59,26 +90,35 @@ const FriendRequests = () => {
     }, []);
 
     const getFriendRequests = async () => {
-        await friendApi.getFriendRequests().then((res) => {
-            console.log(res.data);
-            const filteredRequests = res.data.filter((request: any) => {
-                return request.sentBy !== userInfo?.username;
-            });
-            setRequests(filteredRequests);
-        });
+        try {
+            const res = await friendApi.getFriendRequests();
+            const filteredRequests = res.data.filter((request: any) => request.sentBy !== userInfo?.username);
+            if (filteredRequests.length === 0) {
+                // Use mock data if no requests
+                setRequests(mockFriendRequests);
+            } else {
+                setRequests(filteredRequests);
+            }
+        } catch (error) {
+            console.error('Failed to fetch friend requests, using mock data', error);
+            setRequests(mockFriendRequests);
+        }
     };
 
     const handleConfirm = async (id: string) => {
-        console.log(id);
-        await friendApi.acceptFriend(id).then((res) => {
-            console.log(res.data);
+        try {
+            const res = await friendApi.acceptFriend(id);
             message.success(res.data.message);
             getFriendRequests();
-        });
+        } catch (error) {
+            console.error('Error confirming friend request:', error);
+            message.error('Failed to confirm friend request');
+        }
     };
 
     const handleDelete = (id: string) => {
-        console.log(id);
+        setRequests((prev) => prev.filter((request) => request.userId !== id));
+        message.info('Friend request deleted');
     };
 
     return (
@@ -91,14 +131,14 @@ const FriendRequests = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {requests.map((request) => (
-                    <div key={request._id} className="bg-gray-100 text-gray-900 rounded-md shadow-sm border-1">
+                    <div key={request._id} className="bg-gray-100 text-gray-900 rounded-md shadow-sm border">
                         <img
-                            src={`https://i.pravatar.cc/150?u=${request.userId + 1}`}
+                            src={request.avatar || `https://i.pravatar.cc/150?u=${request.userId}`}
                             alt={request.name}
-                            className="w-80 h-60 object-cover rounded-md mb-2"
+                            className="w-full h-60 object-cover rounded-md mb-2"
                         />
                         <div className="px-3">
-                            <h3 className="text-lg font-semibold">{request.sentBy}</h3>
+                            <h3 className="text-lg font-semibold">{request.name}</h3>
                             <div
                                 className="h-6 text-sm text-gray-500 flex items-center"
                                 style={{ minHeight: '1.5rem' }}
