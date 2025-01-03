@@ -11,9 +11,13 @@ import TextField from '@mui/material/TextField';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useSelector } from 'react-redux';
-import { userSelector } from '@/redux/userSlice'; 
+import { userSelector } from '@/redux/userSlice';
 
-export function StatusUpdateForm() {
+interface StatusUpdateFormProps {
+    onAddPost: (newPost: any) => void;
+}
+
+export function StatusUpdateForm({ onAddPost }: StatusUpdateFormProps) {
     const userInfo = useSelector(userSelector);
     const [open, setOpen] = useState(false);
     const [statusText, setStatusText] = useState('');
@@ -22,9 +26,7 @@ export function StatusUpdateForm() {
     const [privacy, setPrivacy] = useState<'Only me' | 'Friends' | 'Public'>('Only me');
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
+    const handleOpen = () => setOpen(true);
 
     const handleClose = () => {
         setOpen(false);
@@ -41,7 +43,22 @@ export function StatusUpdateForm() {
     };
 
     const handlePost = () => {
-        console.log('Posting:', statusText, selectedMedia, privacy);
+        const newPost = {
+            userName: userInfo.username || 'User',
+            date: new Date().toLocaleString('vi-VN', {
+                day: '2-digit',
+                month: 'long',
+                hour: '2-digit',
+                minute: '2-digit',
+            }),
+            content: statusText,
+            imageUrl: selectedMedia.length ? URL.createObjectURL(selectedMedia[0]) : null,
+            likes: 0,
+            comments: [],
+            shares: 0,
+        };
+
+        onAddPost(newPost); // Gửi bài mới về Home
         handleClose();
     };
 
@@ -60,12 +77,12 @@ export function StatusUpdateForm() {
                 <CardContent className="pt-4">
                     <div className="flex items-center space-x-4">
                         <Avatar className="border-2 border-indigo-500">
-                            <AvatarImage src={userInfo.avatar || 'https://scontent.fsgn5-14.fna.fbcdn.net/v/t1.6435-9/116264906_340041997020888_6356968955999431305_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=BNpeF58lw3kQ7kNvgFku822&_nc_zt=23&_nc_ht=scontent.fsgn5-14.fna&_nc_gid=AnGkym0g8PJBjJfdFwR6Y1-&oh=00_AYCuZCWsMDlqJl0KtSxRU9BOHElgHWfzDnmKTdY2VILIAA&oe=679F1C0F'} />
+                            <AvatarImage src={userInfo.avatar || '/placeholder.svg'} />
                             <AvatarFallback>{userInfo.username?.[0] || 'UN'}</AvatarFallback>
                         </Avatar>
                         <TextField
                             onClick={handleOpen}
-                            placeholder={`What's on your mind, ${userInfo.name || 'User'}?`}
+                            placeholder={`Bạn đang nghĩ gì, ${userInfo.username || 'User'}?`}
                             fullWidth
                             variant="outlined"
                             sx={{ backgroundColor: 'white' }}
@@ -73,11 +90,11 @@ export function StatusUpdateForm() {
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                    <Button variant="ghost" className="flex-1" onClick={handleOpen}>
+                    <Button variant="ghost" className="flex-1" onClick={() => handleOpen()}>
                         <Image className="mr-2 h-4 w-4" />
                         Photo
                     </Button>
-                    <Button variant="ghost" className="flex-1" onClick={handleOpen}>
+                    <Button variant="ghost" className="flex-1" onClick={() => handleOpen()}>
                         <Video className="mr-2 h-4 w-4" />
                         Video
                     </Button>
@@ -104,7 +121,7 @@ export function StatusUpdateForm() {
                 <DialogContent>
                     <div className="flex items-center space-x-4 mb-4 mt-4">
                         <Avatar className="border-2 border-indigo-500">
-                            <AvatarImage src={userInfo.avatar || 'https://scontent.fsgn5-14.fna.fbcdn.net/v/t1.6435-9/116264906_340041997020888_6356968955999431305_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=BNpeF58lw3kQ7kNvgFku822&_nc_zt=23&_nc_ht=scontent.fsgn5-14.fna&_nc_gid=AnGkym0g8PJBjJfdFwR6Y1-&oh=00_AYCuZCWsMDlqJl0KtSxRU9BOHElgHWfzDnmKTdY2VILIAA&oe=679F1C0F'} />
+                            <AvatarImage src={userInfo.avatar || '/placeholder.svg'} />
                             <AvatarFallback>{userInfo.username?.[0] || 'UN'}</AvatarFallback>
                         </Avatar>
                         <div>
@@ -122,22 +139,16 @@ export function StatusUpdateForm() {
                                 open={Boolean(anchorEl)}
                                 onClose={() => setAnchorEl(null)}
                             >
-                                <MenuItem onClick={() => handlePrivacyClose('Only me')}>
-                                    Only me
-                                </MenuItem>
-                                <MenuItem onClick={() => handlePrivacyClose('Friends')}>
-                                    Friends
-                                </MenuItem>
-                                <MenuItem onClick={() => handlePrivacyClose('Public')}>
-                                    Public
-                                </MenuItem>
+                                <MenuItem onClick={() => handlePrivacyClose('Only me')}>Only me</MenuItem>
+                                <MenuItem onClick={() => handlePrivacyClose('Friends')}>Friends</MenuItem>
+                                <MenuItem onClick={() => handlePrivacyClose('Public')}>Public</MenuItem>
                             </Menu>
                         </div>
                     </div>
                     <TextField
                         value={statusText}
                         onChange={(e) => setStatusText(e.target.value)}
-                        placeholder={`What's on your mind, ${userInfo.name || 'User'}?`}
+                        placeholder={`Bạn đang nghĩ gì, ${userInfo.username || 'User'}?`}
                         multiline
                         rows={4}
                         fullWidth
@@ -162,9 +173,7 @@ export function StatusUpdateForm() {
                                     variant="outline"
                                     size="sm"
                                     onClick={() =>
-                                        setSelectedMedia((prev) =>
-                                            prev.filter((_, i) => i !== index)
-                                        )
+                                        setSelectedMedia((prev) => prev.filter((_, i) => i !== index))
                                     }
                                     className="absolute top-2 right-2"
                                 >

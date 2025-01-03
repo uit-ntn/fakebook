@@ -26,15 +26,17 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ friends }) => {
             .addFriend(userId)
             .then((res) => {
                 message.success(res.data.message);
+                alert('Add friend success');
             })
             .catch((error) => {
                 message.error(error.response.data.message);
+                alert('Add friend failed');
             });
     };
 
     return (
         <div className="sticky top-16 bg-white shadow-md rounded-md p-4 max-h-[80vh] overflow-y-auto w-60">
-            <h2 className="text-lg font-semibold mb-4">Liên hệ</h2>
+            <h2 className="text-lg font-semibold mb-4">Có thể bạn biết</h2>
             {friends.map((friend) => (
                 <div key={friend?._id} className="flex items-center mb-3 w-full overflow-hidden">
                     <img
