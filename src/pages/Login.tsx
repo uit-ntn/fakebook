@@ -13,9 +13,10 @@ import Divider from '@mui/material/Divider';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
+import Alert from '@mui/material/Alert';
 import { styled } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
-import type { AppDispatch } from '../redux/store'; // Import AppDispatch
+import type { AppDispatch } from '../redux/store';
 import { loginUser } from '../redux/userThunk';
 
 // Styled components
@@ -62,7 +63,7 @@ export default function Login() {
     const navigate = useNavigate();
     const [passwordError, setPasswordError] = useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
-    const [loginError, setLoginError] = useState(''); // State để lưu lỗi đăng nhập
+    const [loginError, setLoginError] = useState(''); // State lưu thông báo lỗi từ server
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -80,9 +81,9 @@ export default function Login() {
         }
         try {
             await dispatch(loginUser({ username, password })).unwrap();
-            window.location.reload();
+            navigate('/'); // Navigate to home page after successful login
         } catch (error: any) {
-            setLoginError(error);
+            setLoginError('Invalid username or password. Please try again.');
         }
     };
 
@@ -98,6 +99,7 @@ export default function Login() {
                     >
                         Sign in
                     </Typography>
+
                     <Box
                         component="form"
                         onSubmit={handleSubmit}
@@ -138,23 +140,49 @@ export default function Login() {
                             />
                         </FormControl>
                         {loginError && (
-                            <Typography variant="body2" color="error" sx={{ marginBottom: 2 }}>
+                            <Alert severity="error">
                                 {loginError}
-                            </Typography>
+                            </Alert>
                         )}
-                        <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+
                         <Button type="submit" fullWidth variant="contained">
                             Sign in
                         </Button>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                width: '100%',
+                            }}
+                        >
+                            <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    textAlign: 'right',
+                                    cursor: 'pointer',
+                                    color: 'blue',
+                                }}
+                                onClick={() => navigate('/forgot-password')}
+                            >
+                                Forgot Password?
+                            </Typography>
+                        </Box>
+
                     </Box>
                     <Divider>or</Divider>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <Button fullWidth variant="outlined" onClick={() => alert('Sign in with Google')}>
+                        <Button
+                            fullWidth
+                            variant="outlined"
+                            onClick={() => alert('Sign in with Google')}
+                        >
                             Sign in with Google
                         </Button>
                         <Typography sx={{ textAlign: 'center' }}>
                             Don&apos;t have an account?{' '}
-                            <Link href="/register" variant="body2" sx={{ alignSelf: 'center' }}>
+                            <Link href="/signup" variant="body2" sx={{ alignSelf: 'center' }}>
                                 Sign up
                             </Link>
                         </Typography>

@@ -37,32 +37,32 @@ const Home = () => {
     const [friends, setFriends] = useState<any[]>([]);
     const [posts, setPosts] = useState([
         {
-            userName: 'John Doe',
-            date: 'October 11',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc enim, porttitor #hashtag',
+            userName: 'Nguyễn Văn A',
+            date: '11 Tháng Mười',
+            content: 'Chill chill',
             imageUrl: 'https://picsum.photos/800/600',
-            likes: 177,
+            likes: 17,
             comments: [
-                { userName: 'Alice Johnson', content: 'Great post!', timestamp: '2h ago' },
-                { userName: 'Bob Smith', content: 'I totally agree with you.', timestamp: '1h ago' },
-                { userName: 'Carol Williams', content: 'Thanks for sharing this!', timestamp: '30m ago' },
+                { userName: 'Trần Thị B', content: 'Bài viết hay quá!', timestamp: '2 giờ trước' },
+                { userName: 'Lê Văn C', content: 'Tôi hoàn toàn đồng ý với bạn.', timestamp: '1 giờ trước' },
+                { userName: 'Phạm Thị D', content: 'Cảm ơn bạn đã chia sẻ điều này!', timestamp: '30 phút trước' },
             ],
             shares: 5,
         },
         {
-            userName: 'Jane Smith',
-            date: 'October 10',
-            content: 'Another interesting post with a different image #social',
+            userName: 'Lê Thị E',
+            date: '10 Tháng Mười',
+            content: 'Cũng ko chill lắm #xã hội',
             imageUrl: 'https://picsum.photos/800/600',
-            likes: 230,
+            likes: 23,
             comments: [
-                { userName: 'David Brown', content: 'This is really insightful.', timestamp: '5h ago' },
-                { userName: 'Eva Davis', content: 'I have a different perspective on this.', timestamp: '3h ago' },
+                { userName: 'Ngô Văn F', content: 'Thật sự rất sâu sắc.', timestamp: '5 giờ trước' },
+                { userName: 'Đinh Thị G', content: 'Tôi có góc nhìn khác về vấn đề này.', timestamp: '3 giờ trước' },
             ],
             shares: 8,
         },
     ]);
-
+    
     const getUserInfo = async () => {
         const accessToken = getToken();
         if (accessToken) {

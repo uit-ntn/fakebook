@@ -5,6 +5,7 @@ import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import Friends from '@/pages/Friend';
 import Profile from '@/pages/Profile';
+import ForgotPassword from '@/pages/ForgotPassword';
 
 interface RouteType {
     path: string;
@@ -19,8 +20,9 @@ const privateRoutes: RouteType[] = [
 ];
 
 const publicRoutes: RouteType[] = [
-    { path: '/', page: Login },
-    { path: '/register', page: Signup },
+    { path: '/login', page: Login },
+    { path: '/signup', page: Signup },
+    { path: '/forgot-password', page: ForgotPassword }
 ];
 
 export { privateRoutes, publicRoutes };
