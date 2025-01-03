@@ -1,7 +1,7 @@
 import { Socket, io } from 'socket.io-client';
 import { API_ENDPOINT } from '../utils/endpoints';
 
-export const SOCKET_ENDPOINT = 'http://localhost:5000';
+export const SOCKET_ENDPOINT = 'https://simplesocialds.me';
 
 export const socket: Socket = io(`${SOCKET_ENDPOINT}/chat`, {
     transports: ['websocket'],
