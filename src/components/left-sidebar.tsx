@@ -1,18 +1,21 @@
 import { User, Users, Bookmark, Clock, Video, Store, Rss } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../redux/userSlice'; // Đảm bảo đường dẫn chính xác
 
 const LeftSidebar = () => {
     const navigate = useNavigate();
+    const user = useSelector(userSelector); // Lấy thông tin người dùng từ Redux store
 
     const menuItems = [
-        { icon: <User className="w-5 h-5 text-blue-500" />, label: 'Nguyễn Thanh Nhân', path: '/profile' },
-        { icon: <Users className="w-5 h-5 text-blue-500" />, label: 'Friends', path: '/friends' },
-        { icon: <Bookmark className="w-5 h-5 text-purple-500" />, label: 'Saved', path: '/saved' },
-        { icon: <Clock className="w-5 h-5 text-blue-400" />, label: 'Memories', path: '/memories' },
-        { icon: <Users className="w-5 h-5 text-blue-400" />, label: 'Groups', path: '/groups' },
+        { icon: <User className="w-5 h-5 text-blue-500" />, label: user?.username || 'Nguyễn Thanh Nhân', path: '/profile' },
+        { icon: <Users className="w-5 h-5 text-blue-500" />, label: 'Bạn bè', path: '/friends' },
+        { icon: <Bookmark className="w-5 h-5 text-purple-500" />, label: 'Đã lưu', path: '/saved' },
+        { icon: <Clock className="w-5 h-5 text-blue-400" />, label: 'Kỷ niệm', path: '/memories' },
+        { icon: <Users className="w-5 h-5 text-blue-400" />, label: 'Nhóm', path: '/groups' },
         { icon: <Video className="w-5 h-5 text-blue-500" />, label: 'Video', path: '/videos' },
         { icon: <Store className="w-5 h-5 text-blue-500" />, label: 'Marketplace', path: '/marketplace' },
-        { icon: <Rss className="w-5 h-5 text-blue-500" />, label: 'Feeds', path: '/feeds' },
+        { icon: <Rss className="w-5 h-5 text-blue-500" />, label: 'Phản hồi', path: '/feeds' },
     ];
 
     return (
