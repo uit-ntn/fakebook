@@ -1,8 +1,11 @@
+import React, { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/avatar';
 import { Button } from '@/components/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/card';
 import { Input } from '@/components/input';
-import { Camera, GiftIcon as Gif, Image, MoreHorizontal, Share2, Smile, Sticker } from 'lucide-react';
+import { Camera, Smile, MoreHorizontal, Share2 } from 'lucide-react';
+import Picker from '@emoji-mart/react';
+import data from '@emoji-mart/data';
 import { Link } from 'react-router-dom';
 
 interface Comment {
@@ -21,7 +24,36 @@ interface PostProps {
     shares: number;
 }
 
-export function Post({ userName, date, content, imageUrl, likes, comments, shares }: PostProps) {
+export function Post({ userName, date, content, imageUrl, likes, comments: initialComments, shares }: PostProps) {
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [commentText, setCommentText] = useState('');
+    const [comments, setComments] = useState<Comment[]>(initialComments);
+
+    const handleEmojiSelect = (emoji: any) => {
+        setCommentText((prev) => prev + emoji.native);
+        setShowEmojiPicker(false);
+    };
+
+    const handleAddComment = () => {
+        if (commentText.trim() === '') return;
+
+        const newComment: Comment = {
+            userName: 'Current User', // Replace with dynamic user info if needed
+            content: commentText,
+            timestamp: 'Just now',
+        };
+
+        setComments((prev) => [...prev, newComment]);
+        setCommentText('');
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleAddComment();
+        }
+    };
+
     return (
         <Card className="mb-4">
             <CardHeader className="flex flex-row items-center space-y-0 gap-2 p-4">
@@ -43,11 +75,6 @@ export function Post({ userName, date, content, imageUrl, likes, comments, share
             </CardHeader>
             <CardContent className="px-4 pb-2 space-y-4">
                 <p>{content}</p>
-                {content.includes('#') && (
-                    <Link to="#" className="text-blue-600 hover:underline">
-                        {content.split(' ').find((word) => word.startsWith('#'))}
-                    </Link>
-                )}
                 <div className="relative aspect-square w-full overflow-hidden rounded-md flex">
                     <img src={imageUrl} alt="Post image" className="object-cover" />
                 </div>
@@ -72,18 +99,15 @@ export function Post({ userName, date, content, imageUrl, likes, comments, share
                         Like
                     </Button>
                     <Button variant="ghost" className="flex-1">
-                        Bình luận
+                        Comment
                     </Button>
                     <Button variant="ghost" className="flex-1">
                         <Share2 className="mr-2 h-4 w-4" />
-                        Chia sẻ
+                        Share
                     </Button>
                 </div>
                 {comments.map((comment, index) => (
-                    <div
-                        key={index}
-                        className="flex w-full items-start space-x-2 px-4 py-2 mb-2 mx-2"
-                    >
+                    <div key={index} className="flex w-full items-start space-x-2 px-4 py-2 mb-2 mx-2">
                         <Avatar className="h-12 w-12 border rounded-full">
                             <AvatarImage src="/placeholder.svg" />
                             <AvatarFallback>{comment.userName.charAt(0)}</AvatarFallback>
@@ -101,27 +125,34 @@ export function Post({ userName, date, content, imageUrl, likes, comments, share
                         </div>
                     </div>
                 ))}
-                <div className="flex w-full items-center p-4 gap-2">
+                <div className="relative flex w-full items-center p-4 gap-2">
                     <Avatar className="h-8 w-8">
                         <AvatarImage src="/placeholder.svg" />
                         <AvatarFallback>{userName.charAt(0)}</AvatarFallback>
                     </Avatar>
-                    <div className="flex-1 flex items-center gap-2 rounded-full bg-muted px-4 py-2">
+                    <div className="flex-1 flex items-center gap-2 rounded-full bg-muted px-4 py-2 relative">
                         <Input
                             className="border bg-transparent p-0 focus-visible:ring-0 p-2 h-8"
                             placeholder="Write a comment..."
+                            value={commentText}
+                            onChange={(e) => setCommentText(e.target.value)}
+                            onKeyPress={handleKeyPress}
                         />
                         <div className="flex gap-2">
-                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
-                                <Camera className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
-                                <Sticker className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 rounded-full"
+                                onClick={() => setShowEmojiPicker((prev) => !prev)}
+                            >
                                 <Smile className="h-4 w-4" />
                             </Button>
                         </div>
+                        {showEmojiPicker && (
+                            <div className="absolute bottom-full right-0 mb-2 z-50">
+                                <Picker data={data} onEmojiSelect={handleEmojiSelect} theme="light" />
+                            </div>
+                        )}
                     </div>
                 </div>
             </CardFooter>

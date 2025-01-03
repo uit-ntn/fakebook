@@ -81,6 +81,7 @@ export default function Login() {
         }
         try {
             await dispatch(loginUser({ username, password })).unwrap();
+            alert('Đăng nhập thành công');
             navigate('/'); // Navigate to home page after successful login
         } catch (error: any) {
             setLoginError('Invalid username or password. Please try again.');

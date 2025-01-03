@@ -1,344 +1,193 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/avatar';
-import { Button } from '@/components/button';
-import { Input } from '@/components/input';
-import { ScrollArea } from '@/components/scroll-area';
-import { Phone, Video, MoreVertical, Paperclip, Send, Search, X } from 'lucide-react';
-import conversationApi from '@/services/conversationServices';
-import dayjs from 'dayjs';
-import messageApi from '@/services/messageServices';
-import { useSelector } from 'react-redux';
-import { userSelector } from '@/redux/userSlice';
-import { socket, socketEmit, socketOff, socketOn } from '@/services/socketService';
-
-// const friendListMock = [
-//     {
-//         friendInfo: {
-//             _id: '1',
-//             username: 'Alice',
-//             lastMessage: 'Hey, how are you?',
-//             lastMessageTime: '10:30 AM',
-//         },
-//     },
-//     {
-//         friendInfo: {
-//             _id: '2',
-//             username: 'Bob',
-//             lastMessage: "Let's catch up later!",
-//             lastMessageTime: 'Yesterday',
-//         },
-//     },
-//     {
-//         friendInfo: {
-//             _id: '3',
-//             username: 'Charlie',
-//             lastMessage: 'See you at the meeting.',
-//             lastMessageTime: '2 days ago',
-//         },
-//     },
-// ];
+import React, { useState, useRef } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar";
+import { Button } from "@/components/button";
+import { Input } from "@/components/input";
+import { ScrollArea } from "@/components/scroll-area";
+import { Paperclip, Send, Search } from "lucide-react";
+import dayjs from "dayjs";
 
 const ChatPage = () => {
-    const userInfo = useSelector(userSelector);
-    const [friendList, setFriendList] = useState([]);
-    const [listMessage, setListMessage] = useState<any[]>([]);
-    const [friendSelected, setFriendSelected] = useState<string>('');
-    const [message, setMessage] = useState<string>('');
-    const [showSidebar, setShowSidebar] = useState<boolean>(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  // Mock dữ liệu người dùng và danh sách bạn bè
+  const userInfo = { _id: "1", username: "User" }; // Người dùng hiện tại
+  const [friendList, setFriendList] = useState([
+    { friendId: { _id: "2", username: "Alice" }, lastMessage: "Chào bạn!", timeLastSent: new Date() },
+    { friendId: { _id: "3", username: "Bob" }, lastMessage: "Tối nay đi đâu không?", timeLastSent: new Date() },
+    { friendId: { _id: "4", username: "Charlie" }, lastMessage: "Hẹn gặp ngày mai nhé!", timeLastSent: new Date() },
+  ]);
 
-    useEffect(() => {
-        getConversations();
-    }, []);
+  // Mock dữ liệu tin nhắn
+  const [listMessage, setListMessage] = useState<
+  { _id: string; sendId: string; receiveId: string; content: string; images: string[]; createdAt: Date }[]
+>([
+  { _id: "1", sendId: "1", receiveId: "2", content: "Hello Alice!", images: [], createdAt: new Date() },
+  { _id: "2", sendId: "2", receiveId: "1", content: "Chào bạn!", images: [], createdAt: new Date() },
+]);
 
-    useEffect(() => {
-        getMessages(friendSelected);
-    }, [friendSelected]);
 
-    useEffect(() => {
-        socketOn('privateMessage', (data: any) => {
-            console.log(data);
-            getMessages(friendSelected);
-        });
-    }, []);
+  const [friendSelected, setFriendSelected] = useState("2"); // ID bạn bè được chọn
+  const [message, setMessage] = useState(""); // Nội dung tin nhắn
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-    const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (files) {
-            const fileArray = Array.from(files);
-            setSelectedFiles((prev) => [...prev, ...fileArray]);
+  // Lọc tin nhắn giữa người dùng và bạn bè được chọn
+  const filteredMessages = listMessage.filter(
+    (msg) =>
+      (msg.sendId === userInfo._id && msg.receiveId === friendSelected) ||
+      (msg.receiveId === userInfo._id && msg.sendId === friendSelected)
+  );
 
-            // Create previews for all selected files
-            fileArray.forEach((file) => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const base64 = reader.result as string;
-                    setImagePreviews((prev) => [...prev, base64]);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-    };
+  // Xử lý gửi tin nhắn
+  const handleChat = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (message.trim() || imagePreviews.length > 0) {
+      const newMessage = {
+        _id: new Date().toISOString(),
+        sendId: userInfo._id,
+        receiveId: friendSelected,
+        content: message.trim(),
+        images: imagePreviews, // Thêm ảnh đã chọn
+        createdAt: new Date(),
+      };
+      setListMessage((prev) => [...prev, newMessage]);
+      setMessage("");
+      setImagePreviews([]);
+      setSelectedFiles([]);
+    }
+  };
 
-    const removeImagePreview = (index: number) => {
-        setImagePreviews((prev) => prev.filter((_, i) => i !== index));
-        setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
-    };
+  // Xử lý chọn file
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      setSelectedFiles((prev) => [...prev, ...fileArray]);
 
-    const clearAllPreviews = () => {
-        setImagePreviews([]);
-        setSelectedFiles([]);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-    };
+      fileArray.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64 = reader.result as string;
+          setImagePreviews((prev) => [...prev, base64]);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
 
-    const getConversations = async () => {
-        await conversationApi.getConversations().then((res) => {
-            console.log(res.data);
-            setFriendList(res.data);
-            setFriendSelected(res.data[0].friendId?._id);
-        });
-    };
-
-    const getMessages = async (sendId: string) => {
-        await messageApi.getList(sendId).then((res) => {
-            console.log(res.data);
-            setListMessage(res.data);
-        });
-    };
-
-    const handleChat = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log(message.trim());
-        if (message.trim() || imagePreviews.length > 0) {
-            if (imagePreviews.length > 0) {
-                socketEmit('private-message', {
-                    content: message.trim(),
-                    files: imagePreviews,
-                    receiveId: friendSelected,
-                    sendId: userInfo?._id,
-                });
-            } else if (message.trim()) {
-                socketEmit('private-message', {
-                    content: message.trim(),
-                    sendId: userInfo?._id,
-                    receiveId: friendSelected,
-                });
-            }
-            setMessage('');
-            clearAllPreviews();
-        }
-    };
-
-    return (
-        <div className="flex h-screen bg-gray-100 overflow-hidden">
-            {/* Sidebar */}
-            <div className="w-1/5 bg-white border-r border-gray-200">
-                <div className="p-4 border-b border-gray-200">
-                    <h2 className="text-xl font-semibold text-gray-800">Chats</h2>
-                    <div className="flex relative mt-4">
-                        <Input type="text" placeholder="Search user" className="bg-gray-100" />
-                        <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    </div>
-                </div>
-                <ScrollArea className="h-[calc(100vh-120px)]">
-                    {friendList.map((friend: any, index) => (
-                        <div
-                            key={friend.friendId?._id ? friend.friendId?._id : index}
-                            className={`flex items-center p-3 hover:bg-gray-50 cursor-pointer ${
-                                friend.friendId?._id === friendSelected ? 'bg-gray-100' : ''
-                            }`}
-                            onClick={() => setFriendSelected(friend.friendId?._id)}
-                        >
-                            <Avatar className="h-12 w-12">
-                                <AvatarImage src={`https://i.pravatar.cc/100?u=${friend?.friendId?._id}`} />
-                                <AvatarFallback>{friend.friendId?.username.charAt(0)}</AvatarFallback>
-                            </Avatar>
-                            <div className="ml-3 flex-1">
-                                <h3 className="text-sm font-semibold text-gray-800">{friend.friendId?.username}</h3>
-                                <div className="text-sm text-gray-600 flex justify-between">
-                                    <span className="truncate">{friend?.lastMessage}</span>
-                                    <span className="ml-2 text-xs text-gray-400 whitespace-nowrap">
-                                        {dayjs(friend?.timeLastSent).format('h:mm A')}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </ScrollArea>
-            </div>
-
-            {/* Main Chat Area */}
-            <div className={`flex-1 flex flex-col ${showSidebar ? 'mr-64' : ''}`}>
-                {/* Chat Header */}
-                <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
-                    <div className="flex items-center">
-                        <Avatar className="h-10 w-10">
-                            <AvatarImage src={`https://i.pravatar.cc/100?u=${friendSelected}`} />
-                            <AvatarFallback>
-                                {friendList
-                                    .find((f: any) => f.friendId?._id === friendSelected)
-                                    ?.friendId.username.charAt(0)}
-                            </AvatarFallback>
-                        </Avatar>
-                        <h3 className="ml-3 text-lg font-semibold text-gray-800">
-                            {friendList.find((f: any): any => f.friendId?._id === friendSelected)?.friendId?.username}
-                        </h3>
-                    </div>
-                    <div className="flex space-x-2">
-                        <Button variant="ghost" size="icon">
-                            <Phone className="h-5 w-5 text-blue-500" />
-                        </Button>
-                        <Button variant="ghost" size="icon">
-                            <Video className="h-5 w-5 text-blue-500" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => setShowSidebar((prev) => !prev)}>
-                            <MoreVertical className="h-5 w-5 text-gray-500" />
-                        </Button>
-                    </div>
-                </div>
-
-                {/* Messages */}
-                <ScrollArea className="flex-1 bg-gray-50">
-                    <div className="space-y-4 px-4 py-3">
-                        {listMessage.map((msg: any) => (
-                            <div
-                                key={msg._id}
-                                className={`flex ${
-                                    msg?.sendId === userInfo?._id ? 'flex-row-reverse' : 'justify-start'
-                                } items-center gap-3`}
-                            >
-                                <Avatar className="h-11 w-11">
-                                    <AvatarImage src={`https://i.pravatar.cc/100?u=`} />
-                                </Avatar>
-                                <div
-                                    className={`max-w-[60%] ${
-                                        msg.sendId === userInfo?._id ? 'bg-blue-500 text-white' : 'bg-white'
-                                    } rounded-lg p-2 shadow space-y-2`}
-                                >
-                                    {msg.content && (
-                                        <p className="text-sm whitespace-pre-wrap break-words">{msg?.content}</p>
-                                    )}
-                                    {msg.images && Array.isArray(msg.images) && msg.images.length > 0 && (
-                                        <div
-                                            className={`grid gap-1 ${
-                                                msg.images.length === 1
-                                                    ? 'grid-cols-1'
-                                                    : msg.images.length === 2
-                                                    ? 'grid-cols-2'
-                                                    : msg.images.length === 3
-                                                    ? 'grid-cols-2'
-                                                    : 'grid-cols-2'
-                                            }`}
-                                        >
-                                            {msg.images.map((file: string, index: number) => (
-                                                <div
-                                                    key={index}
-                                                    className={`relative ${
-                                                        msg.images.length === 3 && index === 2 ? 'col-span-2' : ''
-                                                    }`}
-                                                >
-                                                    <img
-                                                        src={file}
-                                                        alt={`Shared image ${index + 1}`}
-                                                        className="rounded-lg w-full h-full object-cover"
-                                                        style={{
-                                                            maxHeight: msg.images.length === 1 ? '300px' : '200px',
-                                                        }}
-                                                    />
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                    <span
-                                        className={`text-xs block ${
-                                            msg.sendId === userInfo?._id ? 'text-white/80' : 'text-gray-500'
-                                        }`}
-                                    >
-                                        {dayjs(msg?.createdAt).format('h:mm A')}
-                                    </span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </ScrollArea>
-
-                {/* Chat Input */}
-                <div className="bg-white border-t border-gray-200 p-4">
-                    {imagePreviews.length > 0 && (
-                        <div className="mb-4 flex flex-wrap gap-2">
-                            {imagePreviews.map((preview, index) => (
-                                <div key={index} className="relative inline-block">
-                                    <img src={preview} alt={`Preview ${index + 1}`} className="max-h-32 rounded-lg" />
-                                    <button
-                                        onClick={() => removeImagePreview(index)}
-                                        className="absolute -top-2 -right-2 bg-gray-800 rounded-full p-1 hover:bg-gray-700"
-                                    >
-                                        <X className="h-4 w-4 text-white" />
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                    <div className="flex items-center space-x-2">
-                        <input
-                            type="file"
-                            ref={fileInputRef}
-                            onChange={handleFileSelect}
-                            accept="image/*"
-                            className="hidden"
-                            multiple // Add this attribute
-                        />
-                        <Button variant="ghost" size="icon" onClick={() => fileInputRef.current?.click()}>
-                            <Paperclip className="h-5 w-5 text-gray-500" />
-                        </Button>
-                        <Input
-                            type="text"
-                            placeholder="Type a message..."
-                            className="flex-1 border-gray-200"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                        />
-                        <Button size="icon" onClick={handleChat}>
-                            <Send className="h-5 w-5" />
-                        </Button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Right Sidebar */}
-            {showSidebar && (
-                <div className="w-64 bg-gray-100 border-l border-black-200 fixed right-0 top-0 h-screen p-4">
-                    <div className="flex flex-col items-center">
-                        <Avatar className="h-20 w-20 mb-4">
-                            <AvatarImage src={`https://i.pravatar.cc/100?u=${friendSelected}`} />
-                            <AvatarFallback>
-                                {friendList
-                                    .find((f: any) => f.friendId._id === friendSelected)
-                                    ?.friendId.username.charAt(0)}
-                            </AvatarFallback>
-                        </Avatar>
-                        <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                            {friendList.find((f: any) => f.friendId._id === friendSelected)?.friendId.username}
-                        </h3>
-                        <p className="text-sm text-gray-500 mb-4">Active now</p>
-                        <Button variant="outline" className="w-full mb-2">
-                            Chat Info
-                        </Button>
-                        <Button variant="outline" className="w-full mb-2">
-                            Customize Chat
-                        </Button>
-                        <Button variant="outline" className="w-full">
-                            Privacy & Support
-                        </Button>
-                    </div>
-                </div>
-            )}
+  // Giao diện chính
+  return (
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
+      <div className="w-1/4 bg-white border-r border-gray-200">
+        <div className="p-4 border-b">
+          <h2 className="text-xl font-semibold">Danh sách bạn bè</h2>
+          <div className="relative mt-4">
+            <Input type="text" placeholder="Tìm kiếm..." />
+            <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          </div>
         </div>
-    );
+        <ScrollArea className="h-[calc(100vh-120px)]">
+          {friendList.map((friend) => (
+            <div
+              key={friend.friendId._id}
+              className={`p-3 flex items-center hover:bg-gray-100 cursor-pointer ${
+                friend.friendId._id === friendSelected ? "bg-gray-200" : ""
+              }`}
+              onClick={() => setFriendSelected(friend.friendId._id)}
+            >
+              <Avatar className="h-12 w-12">
+                <AvatarImage src={`https://i.pravatar.cc/100?u=${friend.friendId._id}`} />
+                <AvatarFallback>{friend.friendId.username.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div className="ml-3">
+                <h3 className="text-sm font-semibold">{friend.friendId.username}</h3>
+                <p className="text-xs text-gray-500 truncate">{friend.lastMessage}</p>
+              </div>
+            </div>
+          ))}
+        </ScrollArea>
+      </div>
+
+      {/* Main Chat Area */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <div className="bg-white border-b p-4 flex items-center">
+          <Avatar className="h-10 w-10">
+            <AvatarImage src={`https://i.pravatar.cc/100?u=${friendSelected}`} />
+          </Avatar>
+          <h3 className="ml-3 text-lg font-semibold">
+            {friendList.find((f) => f.friendId._id === friendSelected)?.friendId.username}
+          </h3>
+        </div>
+
+        {/* Messages */}
+        <ScrollArea className="flex-1 p-4 bg-gray-50">
+          {filteredMessages.map((msg) => (
+            <div
+              key={msg._id}
+              className={`flex ${
+                msg.sendId === userInfo._id ? "justify-end" : "justify-start"
+              } mb-2`}
+            >
+              <div
+                className={`p-2 rounded-lg max-w-[60%] ${
+                  msg.sendId === userInfo._id ? "bg-blue-500 text-white" : "bg-gray-200 text-black"
+                }`}
+              >
+                {msg.content}
+                {msg.images && (
+                  <div className="mt-2 grid grid-cols-2 gap-2">
+                    {msg.images.map((image, index) => (
+                      <img key={index} src={image} alt="Image" className="rounded-lg max-h-40" />
+                    ))}
+                  </div>
+                )}
+                <p className="text-xs mt-1 text-right">
+                  {dayjs(msg.createdAt).format("HH:mm")}
+                </p>
+              </div>
+            </div>
+          ))}
+        </ScrollArea>
+
+        {/* Input */}
+        <div className="p-4 bg-white border-t">
+          {imagePreviews.length > 0 && (
+            <div className="mb-4 flex flex-wrap gap-2">
+              {imagePreviews.map((preview, index) => (
+                <div key={index} className="relative inline-block">
+                  <img src={preview} alt="Preview" className="max-h-32 rounded-lg" />
+                </div>
+              ))}
+            </div>
+          )}
+          <form className="flex items-center space-x-2" onSubmit={handleChat}>
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleFileSelect}
+              accept="image/*"
+              multiple
+            />
+            <Button variant="ghost" size="icon" onClick={() => fileInputRef.current?.click()}>
+              <Paperclip />
+            </Button>
+            <Input
+              type="text"
+              placeholder="Nhập tin nhắn..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="flex-1"
+            />
+            <Button type="submit" size="icon">
+              <Send />
+            </Button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ChatPage;

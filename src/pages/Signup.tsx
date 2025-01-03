@@ -126,7 +126,7 @@ export default function SignUp() {
                 navigate('/');
             }, 3000);
         } catch (error) {
-            message.error('Registration failed: ' + error);
+            message.error('Tài khoản đã tồn tại');
         }
     };
 
